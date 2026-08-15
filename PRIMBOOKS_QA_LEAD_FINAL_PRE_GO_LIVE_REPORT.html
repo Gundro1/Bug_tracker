@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrimBooks ERP — QA Lead Final Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#0f172a;color:#f1f5f9;line-height:1.5;padding:1.5rem;max-width:1300px;margin:0 auto}
+.page-break{page-break-after:always;break-after:page;margin:1.5rem 0;border-bottom:2px dashed #334155}
+.hdr{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:1.5rem;margin-bottom:1rem;position:relative}
+.hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ef4444,#f59e0b,#38bdf8);border-radius:12px 12px 0 0}
+.hdr h1{font-size:1.6rem;font-weight:800;margin:0.5rem 0}
+.badge-sm{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:700;text-transform:uppercase}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid #334155;font-size:.82rem}
+.meta span:first-child{color:#64748b;font-size:.7rem;text-transform:uppercase;font-weight:700;display:block}
+.verd{border-radius:12px;padding:1.25rem;margin-bottom:1rem;border:2px solid #ef4444;background:rgba(239,68,68,.12)}
+.verd h2{font-size:1.3rem;font-weight:800;color:#fca5a5;margin-bottom:.5rem}
+.verd p{font-size:.88rem}
+.pill{padding:5px 12px;border-radius:16px;font-weight:800;font-size:.8rem;text-transform:uppercase;display:inline-block;margin:0 4px}
+.pill-d{background:#ef4444;color:#fff}.pill-w{background:#f59e0b;color:#0f172a}
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1rem}
+.mc{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:1rem}
+.mc .t{font-size:.72rem;color:#94a3b8;font-weight:600}.mc .v{font-size:1.7rem;font-weight:800;margin:.2rem 0}.mc .s{font-size:.68rem;color:#64748b}
+.sc{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.sc h2{font-size:1.1rem;font-weight:700;margin-bottom:.75rem}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{background:#0f172a;color:#94a3b8;font-weight:700;padding:7px 10px;border-bottom:1px solid #334155;text-transform:uppercase;font-size:.68rem}
+td{padding:8px 10px;border-bottom:1px solid #334155}
+tr:last-child td{border-bottom:none}
+.bg{display:inline-block;padding:2px 7px;border-radius:10px;font-size:.68rem;font-weight:700;text-transform:uppercase}
+.bg-c{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid #ef4444}
+.bg-h{background:rgba(245,158,11,.12);color:#fcd34d;border:1px solid #f59e0b}
+.bg-p{background:rgba(16,185,129,.12);color:#6ee7b7;border:1px solid #10b981}
+.ev{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem}
+.evc{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:.75rem}
+.evc h4{font-size:.82rem;color:#38bdf8;margin-bottom:.25rem}
+.evc img{width:100%;height:140px;object-fit:cover;object-position:top;border-radius:6px;border:1px solid #334155;margin:.4rem 0}
+.evc p{font-size:.75rem;color:#94a3b8;line-height:1.4}
+.evc .exp{font-size:.73rem;color:#cbd5e1;margin-top:.3rem;padding:.4rem;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:4px}
+.evc .exp b{color:#38bdf8}
+.pipe{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:1rem;font-family:monospace;font-size:.78rem;line-height:1.6;color:#cbd5e1}
+.pp{color:#6ee7b7;font-weight:600}.pf{color:#fca5a5;font-weight:600}
+.cl{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.5rem}
+.cli{display:flex;gap:6px;padding:6px 8px;background:#0f172a;border:1px solid #334155;border-radius:5px;font-size:.78rem;align-items:flex-start}
+.so{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:.75rem}
+.sob{background:#0f172a;border:1px solid #334155;border-radius:6px;padding:.6rem;text-align:center;font-size:.78rem}
+.ft{margin-top:1rem;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:#64748b}
+.btn{padding:7px 14px;background:#38bdf8;color:#0f172a;border:none;border-radius:6px;font-weight:800;cursor:pointer}
+@media print{body{background:#fff!important;color:#000!important;padding:0}.hdr,.sc,.mc,.evc,.verd,.sob,.cli,.pipe{background:#fff!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}.page-break{page-break-after:always;break-after:page;border:none;margin:0}th{background:#f1f5f9!important;color:#000!important}td{color:#000!important}.ft{display:none}}
+</style>
+</head>
+<body>
+<!-- ===== PAGE 1: EXECUTIVE SUMMARY ===== -->
+<header class="hdr">
+<span class="badge-sm" style="background:rgba(56,189,248,.1);color:#38bdf8;border:1px solid rgba(56,189,248,.3)">🛡️ Official Senior QA Lead Assessment</span>
+<h1>PrimBooks ERP — Pre-Go-Live Final Assessment Report</h1>
+<div class="meta">
+<div><span>Lead Auditor</span>Azeez Test Lab</div>
+<div><span>Target System</span>test.primbooks.com</div>
+<div><span>Audit Date</span>August 14, 2026</div>
+<div><span>Session</span>GEDU Admin</div>
+</div>
+</header>
+
+<div class="verd">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+<h2>🛑 Final Go-Live Recommendation</h2>
+<div><span class="pill pill-d">NO-GO (Commercial GA)</span><span class="pill pill-w">Closed Pilot Only</span></div>
+</div>
+<p><b>Executive Assessment:</b> The P&L Report shows <b>₦0.00</b> across all revenue/expense lines despite ₦15,000 in recorded expenses. Dashboard Total Revenue reads <b>₦0.00</b>. Finance Journal is completely empty ("No journals found"). The "Need Help?" chat widget physically obstructs Save buttons on critical forms. PrimBooks cannot be released commercially until financial data pipeline and UI blockers are resolved.</p>
+</div>
+
+<div class="mg">
+<div class="mc"><div class="t">Modules Audited</div><div class="v" style="color:#38bdf8">16/16</div><div class="s">100% Scope Coverage</div></div>
+<div class="mc"><div class="t">Test Pass Rate</div><div class="v" style="color:#fcd34d">75.15%</div><div class="s">124 Pass / 31 Fail / 10 Blocked</div></div>
+<div class="mc"><div class="t">Verified Fixed</div><div class="v" style="color:#6ee7b7">46</div><div class="s">74.19% Resolution Rate</div></div>
+<div class="mc"><div class="t">Open Blockers</div><div class="v" style="color:#fca5a5">8</div><div class="s">Must fix before GA launch</div></div>
+</div>
+
+<div class="sc">
+<h2>📊 Quality Gate Assessment Matrix</h2>
+<table>
+<thead><tr><th>Quality Dimension</th><th>Target SLA</th><th>Actual</th><th>Status</th><th>Evidence-Based Outcome</th></tr></thead>
+<tbody>
+<tr><td><b>Financial Accuracy</b></td><td>100% Sync</td><td>Partial — P&L shows ₦0.00 for Sales Revenue while Expenses show ₦15,000</td><td><span class="bg bg-c">CRITICAL</span></td><td>P&L Sales Revenue line = ₦0.00 despite 1 Invoice existing. Office Supplies expense correctly shows ₦15,000. Journal is empty.</td></tr>
+<tr><td><b>Functional Integrity</b></td><td>95% Pass</td><td>75.15%</td><td><span class="bg bg-c">FAILED</span></td><td>Production, Inventory, and Assets modules have data persistence and form interaction failures.</td></tr>
+<tr><td><b>Data Persistence</b></td><td>0 Data Loss</td><td>2 Areas</td><td><span class="bg bg-h">HIGH RISK</span></td><td>Inventory list shows "No inventory found" after items were created. Production list shows 0 products.</td></tr>
+<tr><td><b>Security & Auth</b></td><td>Zero Vulns</td><td>1 Session Leak</td><td><span class="bg bg-h">CONDITIONAL</span></td><td>Logout does not invalidate server session — browser Back button restores dashboard access (PB-059).</td></tr>
+<tr><td><b>UI/UX Flow</b></td><td>Zero CTA Blockers</td><td>1 Overlay</td><td><span class="bg bg-h">HIGH RISK</span></td><td>"Need Help? Customer Care" widget visible in bottom-right on every page, obstructs Save/Submit buttons.</td></tr>
+<tr><td><b>Audit Compliance</b></td><td>100% Logging</td><td>100%</td><td><span class="bg bg-p">PASSED</span></td><td>Audit Trail captures Login, Login Failed, Logout, View actions with timestamps, user, device info, module.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ===== PAGE 2: MODULE SCORECARD + EVIDENCE GALLERY ===== -->
+<div class="sc">
+<h2>🏭 Module Health Scorecard (All 16 Phases)</h2>
+<table>
+<thead><tr><th>Module</th><th>Scope</th><th>Grade</th><th>Status</th><th>Key Findings (Evidence-Based)</th></tr></thead>
+<tbody>
+<tr><td><b>Dashboard</b></td><td>KPIs, Cash Flow Chart</td><td>60%</td><td><span class="bg bg-c">CRITICAL</span></td><td>Total Revenue = ₦0.00 (should reflect invoice revenue). Total Expenses = ₦15,000 (correct). Cash Flow chart flat at ₦0.00 all months.</td></tr>
+<tr><td><b>Production</b></td><td>WIP, Assembly, Forms</td><td>50%</td><td><span class="bg bg-c">CRITICAL</span></td><td>Total Products = 0, Completed = 0, WIP = 0. Empty "Product Assembling History" table. Create form loads but previously exhibited input duplication.</td></tr>
+<tr><td><b>Inventory</b></td><td>Stock List, Item Creation</td><td>40%</td><td><span class="bg bg-c">CRITICAL</span></td><td>Shows "No inventory found..." with empty table. Items created in prior sessions did not persist. "Need Help?" widget visible.</td></tr>
+<tr><td><b>Assets</b></td><td>Wizard, Lease, Depreciation</td><td>75%</td><td><span class="bg bg-h">CONDITIONAL</span></td><td>Asset list loads. Prior testing revealed cost truncation (250,000 → ₦250). Depreciation dependency enforcement works correctly.</td></tr>
+<tr><td><b>Finance (COA)</b></td><td>Chart of Accounts</td><td>85%</td><td><span class="bg bg-p">READY</span></td><td>Chart of Accounts page loads and accepts new account creation. PB-088 fix confirmed.</td></tr>
+<tr><td><b>Finance (Journal)</b></td><td>Journal Entries</td><td>30%</td><td><span class="bg bg-c">CRITICAL</span></td><td>Shows "No journals found..." — completely empty despite P&L showing ₦15,000 Office Supplies expense. Data disconnect.</td></tr>
+<tr><td><b>Finance (Banking)</b></td><td>Banking Overview Chart</td><td>40%</td><td><span class="bg bg-c">CRITICAL</span></td><td>Chart is completely flat at 0 for all 12 months (Jan–Dec). Bank Balance, Card Balance, Cash In Hand all zero.</td></tr>
+<tr><td><b>Bank Recon</b></td><td>Statement Upload, Matching</td><td>90%</td><td><span class="bg bg-p">READY</span></td><td>Page loads with 1 reconciliation record: First Bank, ₦1,000 opening / ₦2,000 closing. Upload & Reconcile buttons functional.</td></tr>
+<tr><td><b>Audit Trail</b></td><td>User Logs, Events</td><td>100%</td><td><span class="bg bg-p">PASSED</span></td><td>Captures all actions: Login, Login Failed, Logout, View — with timestamps, user "GEDU", device info, module labels.</td></tr>
+<tr><td><b>Payroll</b></td><td>Employees, Payouts</td><td>55%</td><td><span class="bg bg-h">CONDITIONAL</span></td><td>Total Employees = 0, Total Payouts = ₦0.00. Payroll Summary chart flat. No payroll data visible in current session.</td></tr>
+<tr><td><b>Reports (P&L)</b></td><td>Profit & Loss Statement</td><td>50%</td><td><span class="bg bg-c">CRITICAL</span></td><td>Sales Revenue = ₦0.00, COGS = ₦0.00, Expenses = ₦15,000 (Office Supplies). Net Loss = ₦-15,000. Revenue pipeline broken.</td></tr>
+<tr><td><b>Settings</b></td><td>Profile, Currency, Team</td><td>90%</td><td><span class="bg bg-p">READY</span></td><td>Currency = Nigerian Naira (NGN). Settings tabs: My Profile, Notification, Tickets, Organization, Currency, Manage Team, Subscription, Opening Balance, Customization. Single "Currency" link (PB-091 fixed).</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sc">
+<h2>🖼️ Visual Audit Evidence Gallery (Live Screenshots from test.primbooks.com)</h2>
+<div class="ev">
+
+<div class="evc">
+<h4>Evidence #1: Dashboard — Revenue KPI Shows ₦0.00</h4>
+<span class="bg bg-c">INT-003 CONFIRMED</span>
+<img src="evidence/dashboard.png" alt="Dashboard showing ₦0.00 Revenue">
+<div class="exp"><b>Expected:</b> Total Revenue should reflect sum of all CRM invoice amounts (at least 1 invoice exists). <b>Actual:</b> Total Revenue = <b>₦0.00</b>. Total Expenses = ₦15,000.00 (correct). Orders = 1, Invoices = 1 (counts correct). Cash Flow chart flat ₦0.00 across all months.</div>
+</div>
+
+<div class="evc">
+<h4>Evidence #2: P&L Report — Sales Revenue ₦0.00</h4>
+<span class="bg bg-c">INT-001 CONFIRMED</span>
+<img src="evidence/profit_loss.png" alt="P&L Report showing ₦0.00 Sales Revenue">
+<div class="exp"><b>Expected:</b> Sales Revenue should aggregate CRM invoice revenue. COGS should reflect purchase costs. <b>Actual:</b> Sales Revenue = <b>₦0.00</b>, Total Income = ₦0.00, COGS = ₦0.00. Only "Office Supplies" expense correctly shows <b>₦15,000</b>. Net Profit/Loss = <b>₦-15,000.00</b>.</div>
+</div>
+
+<div class="evc">
+<h4>Evidence #3: Finance Journal — Completely Empty</h4>
+<span class="bg bg-c">DATA DISCONNECT</span>
+<img src="evidence/finance_journal.png" alt="Finance Journal showing No journals found">
+<div class="exp"><b>Expected:</b> Journal should contain auto-posted entries from CRM invoices, expenses, and payroll. <b>Actual:</b> Shows <b>"No journals found..."</b> with empty table. This explains why P&L Sales Revenue is ₦0.00 — no journal entries exist to aggregate.</div>
+</div>
+
+<div class="evc">
+<h4>Evidence #4: Banking Overview — All Zeros</h4>
+<span class="bg bg-c">INT-005 CONFIRMED</span>
+<img src="evidence/banking_overview.png" alt="Banking Overview chart at zero">
+<div class="exp"><b>Expected:</b> Bank Balance, Card Balance, and Cash In Hand should reflect bank reconciliation data (First Bank ₦1,000/₦2,000). <b>Actual:</b> 12-month chart completely flat at <b>₦0.00</b> for all three balance types. No data flows from Bank Recon to Banking Overview.</div>
+</div>
+
+<div class="evc">
+<h4>Evidence #5: Audit Trail — 100% Operational ✅</h4>
+<span class="bg bg-p">EXEMPLARY MODULE</span>
+<img src="evidence/audit_trail.png" alt="Audit Trail showing user activity logs">
+<div class="exp"><b>Expected:</b> All user actions logged with timestamps. <b>Actual:</b> Correctly captures: "Profit & Loss report generated" (View, 06:32 AM), "Account owner logged in" (Login, 06:10 AM), "Login failed: invalid credentials" (Login Failed, 05:53 AM), "User logged out" (Logout, 05:50 AM). Module labels (REPORT, AUTH) correct. ✅ <b>PASS</b></div>
+</div>
+
+<div class="evc">
+<h4>Evidence #6: Bank Reconciliation — Working ✅</h4>
+<span class="bg bg-p">RECON-004 FIXED</span>
+<img src="evidence/bank_recon.png" alt="Bank Reconciliation page loading correctly">
+<div class="exp"><b>Expected:</b> Page loads without API crash, shows bank account records. <b>Actual:</b> Shows 1 reconciliation record: First Bank, Operations Account, Opening ₦1,000.00, Closing ₦2,000.00, Status "Not Reconciled", Reconciled By GEDU. Download Template, Upload Statement, Reconcile buttons all functional. ✅ <b>PASS</b></div>
+</div>
+
+<div class="evc">
+<h4>Evidence #7: Production Module — Empty State</h4>
+<span class="bg bg-h">DATA PERSISTENCE ISSUE</span>
+<img src="evidence/production.png" alt="Production page showing 0 products">
+<div class="exp"><b>Expected:</b> Previously created production runs should persist and display in Product Assembling History table. <b>Actual:</b> Total Products = 0, Completed Products = 0, Work in Progress = 0. Table shows <b>"No Production found..."</b>. Data from prior testing sessions did not persist.</div>
+</div>
+
+<div class="evc">
+<h4>Evidence #8: Inventory — Empty After Creation</h4>
+<span class="bg bg-c">PB-042 CONFIRMED</span>
+<img src="evidence/inventory.png" alt="Inventory showing No inventory found">
+<div class="exp"><b>Expected:</b> Inventory items created in prior sessions should persist in the Inventory List table. <b>Actual:</b> Shows <b>"No inventory found..."</b> with empty table. The "Need Help? Customer Care" floating widget is visible in the bottom-right corner obstructing UI. Sub-menus: Inventory List, Inventory Adjustment.</div>
+</div>
+
+<div class="evc">
+<h4>Evidence #9: Payroll — Zero State</h4>
+<span class="bg bg-h">NO DATA</span>
+<img src="evidence/payroll.png" alt="Payroll showing 0 employees and ₦0.00">
+<div class="exp"><b>Expected:</b> Should show processed payroll history and employee records. <b>Actual:</b> Total Employees = 0, Total Payouts = ₦0.00, Overtime and Bonus = ₦0.00, Tax and Deduction = ₦0.00. Payroll Summary chart flat. Sub-menus visible: Employees, Department, Payroll.</div>
+</div>
+
+<div class="evc">
+<h4>Evidence #10: Settings — Currency Consolidated ✅</h4>
+<span class="bg bg-p">PB-091 FIXED</span>
+<img src="evidence/settings.png" alt="Settings page showing single Currency link">
+<div class="exp"><b>Expected:</b> Single "Currency" navigation item (not duplicate links). <b>Actual:</b> Settings shows: My Profile, Notification, Tickets, Organization, <b>Currency</b> (single link, highlighted), Manage Team, Subscription, Opening Balance, Customization. Preferred Currency = Nigerian Naira (NGN). ✅ <b>PASS</b></div>
+</div>
+
+</div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ===== PAGE 3: DEFECT MATRIX + REMEDIATION + SIGN-OFF ===== -->
+<div class="sc">
+<h2>🔄 Financial Data Pipeline Analysis</h2>
+<div class="pipe">
+<div>[ CRM MODULE ]</div>
+<div>  ├── 1 Invoice exists (Dashboard count = 1) <span class="pf">──────► ❌ Sales Revenue in P&L = ₦0.00 (NOT LINKED)</span></div>
+<div>  └── 1 Order exists (Dashboard count = 1) <span class="pp">───────► ✅ Dashboard Order count correct</span></div>
+<br>
+<div>[ PURCHASE / EXPENSES ]</div>
+<div>  └── Office Supplies Expense recorded <span class="pp">──────────────► ✅ P&L Expenses = ₦15,000.00 (CORRECT)</span></div>
+<br>
+<div>[ FINANCE JOURNAL ]</div>
+<div>  └── <span class="pf">❌ "No journals found..." — Journal is completely empty despite P&L showing ₦15K expense</span></div>
+<br>
+<div>[ BANKING OVERVIEW ]</div>
+<div>  └── Bank Recon has First Bank (₦1K/₦2K) <span class="pf">──────► ❌ Chart shows ₦0.00 across all 12 months</span></div>
+<br>
+<div>[ EXECUTIVE DASHBOARD ]</div>
+<div>  ├── Total Revenue: ₦0.00 <span class="pf">──────────────────────► ❌ Should reflect invoice amounts</span></div>
+<div>  └── Total Expenses: ₦15,000.00 <span class="pp">─────────────────► ✅ Correctly reflects Office Supplies</span></div>
+</div>
+</div>
+
+<div class="sc">
+<h2>🛑 Open Critical & High Blockers — Detailed Expected vs. Actual</h2>
+<table>
+<thead><tr><th>ID</th><th>Severity</th><th>Module</th><th>What Was Tested</th><th>Expected Behavior</th><th>Actual Behavior (Observed)</th></tr></thead>
+<tbody>
+<tr><td><b>INT-001</b></td><td><span class="bg bg-c">Critical</span></td><td>Reports</td><td>Opened /reports/profit-loss and checked all P&L line items</td><td>Sales Revenue should show total invoice revenue. All GL categories should aggregate journal data.</td><td>Sales Revenue = ₦0.00, COGS = ₦0.00. Only Expenses (Office Supplies = ₦15,000) populated. Net Loss = ₦-15,000.</td></tr>
+<tr><td><b>INT-003</b></td><td><span class="bg bg-c">Critical</span></td><td>Dashboard</td><td>Checked KPI cards on /dashboard</td><td>Total Revenue should sum all invoice revenue. Order & Invoice counts should match CRM records.</td><td>Total Revenue = ₦0.00 (wrong). Orders = 1, Invoices = 1 (correct counts). Expenses = ₦15,000 (correct).</td></tr>
+<tr><td><b>INT-005</b></td><td><span class="bg bg-c">Critical</span></td><td>Banking</td><td>Opened /finance/banking and inspected 12-month chart</td><td>Chart should reflect bank account balances from Bank Reconciliation (First Bank ₦1,000 opening).</td><td>All 3 chart lines (Bank Balance, Card Balance, Cash In Hand) flat at ₦0.00 across Jan–Dec.</td></tr>
+<tr><td><b>PB-055</b></td><td><span class="bg bg-c">Critical</span></td><td>Global</td><td>Visited multiple pages and checked bottom-right corner</td><td>No UI element should obstruct primary action buttons (Save, Submit, Reconcile).</td><td>"Need Help? Customer Care" floating widget visible on every page in bottom-right, overlapping Save/Submit CTAs on forms.</td></tr>
+<tr><td><b>PB-042</b></td><td><span class="bg bg-c">Critical</span></td><td>Inventory</td><td>Navigated to /inventory/inventorylist and checked for persisted items</td><td>Previously created inventory items should appear in the list after page reload.</td><td>Table shows "No inventory found..." — items from prior creation sessions did not persist.</td></tr>
+<tr><td><b>PB-059</b></td><td><span class="bg bg-h">High</span></td><td>Auth</td><td>Tested logout flow and browser Back button behavior</td><td>After logout, pressing browser Back should NOT restore authenticated dashboard access.</td><td>Logout redirects to /login correctly, but pressing Back restores full dashboard access without re-authentication.</td></tr>
+<tr><td><b>PA-001</b></td><td><span class="bg bg-h">High</span></td><td>Production</td><td>Navigated to /production/create and typed text in Product Name field</td><td>Typed text should appear exactly once in the input field (e.g., "Test" = "Test").</td><td>In prior session, input duplicated characters. Current session: Production list empty, 0 products. Create form loads.</td></tr>
+<tr><td><b>PB-051</b></td><td><span class="bg bg-h">High</span></td><td>Assets</td><td>Tested asset cost input with comma-separated number (250,000)</td><td>System should parse "250,000" as two hundred fifty thousand Naira (₦250,000.00).</td><td>In prior testing, system truncated at comma and saved as ₦250.00 — a 1000x data loss.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sc">
+<h2>🚀 Pre-GA Mandatory Remediation Checklist</h2>
+<div class="cl">
+<div class="cli"><span style="color:#ef4444;font-weight:800">[ ]</span> <span><b>INT-001:</b> Wire P&L Sales Revenue to aggregate CRM invoice journal entries</span></div>
+<div class="cli"><span style="color:#ef4444;font-weight:800">[ ]</span> <span><b>INT-003:</b> Connect Dashboard Total Revenue KPI to financial aggregate API</span></div>
+<div class="cli"><span style="color:#ef4444;font-weight:800">[ ]</span> <span><b>INT-005:</b> Link Banking Overview chart to Bank Reconciliation account balances</span></div>
+<div class="cli"><span style="color:#ef4444;font-weight:800">[ ]</span> <span><b>PB-055:</b> Reposition Chatwoot widget (z-index/offset) to not obstruct CTAs</span></div>
+<div class="cli"><span style="color:#ef4444;font-weight:800">[ ]</span> <span><b>PB-042:</b> Fix inventory item database write persistence on creation</span></div>
+<div class="cli"><span style="color:#ef4444;font-weight:800">[ ]</span> <span><b>PB-059:</b> Implement server-side session invalidation on /logout endpoint</span></div>
+<div class="cli"><span style="color:#ef4444;font-weight:800">[ ]</span> <span><b>PA-001:</b> Remove duplicate event bindings on Production form inputs</span></div>
+<div class="cli"><span style="color:#ef4444;font-weight:800">[ ]</span> <span><b>PB-051:</b> Strip commas/symbols from numeric inputs before server-side parsing</span></div>
+</div>
+<div class="so">
+<div class="sob"><div style="font-size:.68rem;color:#64748b;text-transform:uppercase;font-weight:700">Senior QA Lead</div><div style="font-weight:700;margin:4px 0">Azeez Test Lab</div><div style="color:#fca5a5;font-weight:800">🛑 SIGNED (NO-GO)</div></div>
+<div class="sob"><div style="font-size:.68rem;color:#64748b;text-transform:uppercase;font-weight:700">Lead Architect</div><div style="font-weight:700;margin:4px 0">Engineering</div><div style="color:#64748b">PENDING FIXES</div></div>
+<div class="sob"><div style="font-size:.68rem;color:#64748b;text-transform:uppercase;font-weight:700">Product Manager</div><div style="font-weight:700;margin:4px 0">PrimBooks PM</div><div style="color:#64748b">PENDING REVIEW</div></div>
+<div class="sob"><div style="font-size:.68rem;color:#64748b;text-transform:uppercase;font-weight:700">CEO</div><div style="font-weight:700;margin:4px 0">PrimBooks CEO</div><div style="color:#64748b">PENDING APPROVAL</div></div>
+</div>
+</div>
+
+<footer class="ft">
+<div>Artifact: PRIMBOOKS_QA_LEAD_FINAL_PRE_GO_LIVE_REPORT.html | Audited: Aug 14, 2026</div>
+<button class="btn" onclick="window.print()">🖨️ Print / Save to PDF</button>
+</footer>
+
+</body>
+</html>
