@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>PrimBooks QA Bug Tracker &mdash; Azeez Test Lab</title>
+    <title>Enterprise Bug Tracker — QA Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -264,7 +264,7 @@
         }
 
         .search-wrapper::before {
-            content: "\1F50D";
+            content: "🔍";
             position: absolute;
             left: 8px;
             top: 50%;
@@ -273,7 +273,7 @@
             z-index: 1;
         }
 
-        /* Inline colored dot for severity/status icons */
+        /* Inline colored dot */
         .color-dot {
             display: inline-block;
             width: 8px;
@@ -438,6 +438,11 @@
         .team-badge.frontend {
             background: rgba(124, 92, 247, 0.12);
             color: #a78bfa;
+        }
+
+        .team-badge.fullstack {
+            background: rgba(81, 207, 102, 0.12);
+            color: #51cf66;
         }
 
         /* TICKET NUMBER */
@@ -690,29 +695,12 @@
             margin-top: 8px;
         }
 
-        /* Delete icon in table */
-        .delete-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 14px;
-            padding: 4px 6px;
-            border-radius: 4px;
-            transition: all 0.15s;
-        }
-        .delete-btn:hover {
-            background: rgba(255,77,106,0.15);
-            color: var(--critical);
-        }
-
         .actions-cell {
             display: flex;
             gap: 4px;
             align-items: center;
         }
 
-        /* Action icon buttons with SVG */
         .icon-btn {
             background: none;
             border: none;
@@ -750,18 +738,18 @@
 <div class="header">
     <div class="header-top">
         <div class="header-title">
-            <div class="logo">PB</div>
+            <div class="logo">BT</div>
             <div>
-                <h1>PrimBooks QA Bug Tracker</h1>
-                <div class="subtitle">Azeez Test Lab &mdash; Last saved: <span id="lastSaved">Never</span></div>
+                <h1>Enterprise Bug Tracker</h1>
+                <div class="subtitle">Universal QA & Defect Management System &mdash; Last saved: <span id="lastSaved">Never</span></div>
             </div>
         </div>
         <div class="header-actions">
-            <button class="btn btn-secondary" onclick="undoLastChange()" title="Undo last change" id="undoBtn" disabled>&#x21A9; Undo</button>
-            <button class="btn btn-secondary" onclick="exportMarkdown()">&#x1F4CB; Export Markdown</button>
-            <button class="btn btn-secondary" onclick="exportMeetingAudit()">&#x1F4CA; Export Meeting Audit</button>
+            <button class="btn btn-secondary" onclick="undoLastChange()" title="Undo last change" id="undoBtn" disabled>↩ Undo</button>
+            <button class="btn btn-secondary" onclick="exportMarkdown()">📋 Export Markdown</button>
             <button class="btn btn-primary" onclick="openAddModal()">+ Add Bug</button>
-            <button class="btn btn-danger" onclick="copyForPush()" title="Copy bugs to clipboard then run PUSH.bat" style="margin-left:8px">&#x1F4C5; Copy for Push</button>
+            <button class="btn btn-danger" onclick="copyForPush()" title="Copy bugs to clipboard then run PUSH.bat" style="margin-left:8px">📋 Copy for Push</button>
+            <button class="btn btn-primary" onclick="pushToGitHub()" title="Push directly to GitHub" style="margin-left:4px;background:linear-gradient(135deg,#7c5cf7,#4f8ff7)">🚀 Push to GitHub</button>
         </div>
     </div>
     <div class="stats-bar">
@@ -809,14 +797,6 @@
     </div>
 </div>
 
-
-<!-- SOURCE TABS -->
-<div class="source-tabs" style="display:flex; gap:0; margin: 16px 20px 0 20px; border-bottom: 2px solid var(--border);">
-    <button class="source-tab active" id="tabAll" onclick="switchSourceTab('all')" style="padding:10px 24px; background:none; border:none; border-bottom:3px solid var(--accent); color:var(--accent); font-weight:600; font-size:14px; cursor:pointer; font-family:inherit; transition:all 0.2s;">All Bugs</button>
-    <button class="source-tab" id="tabQA" onclick="switchSourceTab('Senior QA Audit')" style="padding:10px 24px; background:none; border:none; border-bottom:3px solid transparent; color:var(--text-dim); font-weight:500; font-size:14px; cursor:pointer; font-family:inherit; transition:all 0.2s;">My Audit</button>
-    <button class="source-tab" id="tabPM" onclick="switchSourceTab('PM & Team')" style="padding:10px 24px; background:none; border:none; border-bottom:3px solid transparent; color:var(--text-dim); font-weight:500; font-size:14px; cursor:pointer; font-family:inherit; transition:all 0.2s;">PM & Team Report</button>
-</div>
-
 <!-- FILTERS -->
 <div class="filters-bar">
     <div class="filter-group">
@@ -851,6 +831,7 @@
             <option value="all">All</option>
             <option value="Backend">Backend</option>
             <option value="Frontend">Frontend</option>
+            <option value="Fullstack">Fullstack</option>
         </select>
     </div>
     <div class="search-wrapper">
@@ -887,25 +868,19 @@
         <div class="form-row">
             <div class="form-group">
                 <label>Ticket #</label>
-                <input type="text" id="formTicket" placeholder="PB-027">
+                <input type="text" id="formTicket" placeholder="BUG-001">
             </div>
             <div class="form-group">
                 <label>Module</label>
                 <select id="formModule">
+                    <option>Authentication</option>
                     <option>Dashboard</option>
-                    <option>CRM</option>
-                    <option>Finance</option>
-                    <option>Reports</option>
-                    <option>Payroll</option>
-                    <option>Timesheet</option>
-                    <option>Assets</option>
-                    <option>Production</option>
-                    <option>Purchase</option>
-                    <option>Inventory</option>
-                    <option>HRM</option>
-                    <option>Record</option>
+                    <option>User Management</option>
+                    <option>API Gateway</option>
+                    <option>Database & Storage</option>
+                    <option>Payments & Billing</option>
+                    <option>Notifications</option>
                     <option>Settings</option>
-                    <option>Audit Trail</option>
                     <option>Global</option>
                 </select>
             </div>
@@ -914,7 +889,7 @@
         <div class="form-row">
             <div class="form-group">
                 <label>Feature</label>
-                <input type="text" id="formFeature" placeholder="e.g. Revenue KPI">
+                <input type="text" id="formFeature" placeholder="e.g. Password Reset Token">
             </div>
             <div class="form-group">
                 <label>Severity</label>
@@ -933,13 +908,7 @@
                 <select id="formTeam">
                     <option value="Backend">Backend</option>
                     <option value="Frontend">Frontend</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Bug Source</label>
-                <select id="formSource">
-                    <option value="Senior QA Audit">Senior QA Audit</option>
-                    <option value="PM & Team">PM & Team</option>
+                    <option value="Fullstack">Fullstack</option>
                 </select>
             </div>
             <div class="form-group">
@@ -955,7 +924,7 @@
 
         <div class="form-group full" style="margin-bottom:14px">
             <label>Bug Description</label>
-            <input type="text" id="formDescription" placeholder="Short description of the bug">
+            <input type="text" id="formDescription" placeholder="Short description of the defect">
         </div>
 
         <div class="form-group full" style="margin-bottom:14px">
@@ -983,158 +952,167 @@
 
 <!-- TOAST -->
 <div class="toast" id="toast">
-    <span>&#x2705;</span>
+    <span>✅</span>
     <span id="toastMessage">Saved</span>
 </div>
 
 <script>
+// ===================== PROJECT CONFIG =====================
+const PROJECT_CONFIG = {
+    name: "Enterprise Bug Tracker",
+    subtitle: "Universal Defect Management",
+    logo: "BT",
+    repo: "Gundro1/Bug_tracker",
+    file: "index.html",
+    branch: "main"
+};
+
+// ===================== GITHUB PUSH =====================
+async function pushToGitHub() {
+    var token = localStorage.getItem('github_push_token');
+    if (!token) {
+        token = prompt('Enter your GitHub Personal Access Token (repo scope):\n\nCreate one at: https://github.com/settings/tokens\nSelect scope: repo');
+        if (!token) return;
+        localStorage.setItem('github_push_token', token.trim());
+    }
+
+    var code = buildBugDataString();
+    showToast('Pushing to GitHub...');
+
+    try {
+        var getResp = await fetch('https://api.github.com/repos/' + PROJECT_CONFIG.repo + '/contents/' + PROJECT_CONFIG.file + '?ref=' + PROJECT_CONFIG.branch, {
+            headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+        });
+
+        var currentContent;
+        var sha;
+        
+        if (getResp.ok) {
+            var fileData = await getResp.json();
+            sha = fileData.sha;
+            currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
+        } else if (getResp.status === 404) {
+            currentContent = null;
+            sha = null;
+        } else if (getResp.status === 401) {
+            localStorage.removeItem('github_push_token');
+            showToast('Invalid token - cleared. Try again.');
+            return;
+        } else {
+            showToast('GitHub API error: ' + getResp.status);
+            return;
+        }
+
+        var updatedContent;
+        if (currentContent) {
+            var bugPattern = /\/\/ ===BEGIN_BUG_DATA===[\s\S]*?\/\/ ===END_BUG_DATA===/;
+            updatedContent = currentContent.replace(bugPattern, code);
+        } else {
+            showToast('File not found on GitHub. Push the file manually first.');
+            return;
+        }
+
+        var putBody = {
+            message: 'Update bug tracker: ' + bugs.length + ' bugs [auto-push]',
+            content: btoa(unescape(encodeURIComponent(updatedContent))),
+            sha: sha,
+            branch: PROJECT_CONFIG.branch
+        };
+
+        var putResp = await fetch('https://api.github.com/repos/' + PROJECT_CONFIG.repo + '/contents/' + PROJECT_CONFIG.file, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'token ' + token,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(putBody)
+        });
+
+        if (putResp.ok) {
+            showToast('Pushed ' + bugs.length + ' bugs to GitHub!');
+        } else {
+            var err = await putResp.json();
+            showToast('Push failed: ' + (err.message || putResp.status));
+            if (putResp.status === 401) {
+                localStorage.removeItem('github_push_token');
+            }
+        }
+    } catch(e) {
+        showToast('Push error: ' + e.message);
+    }
+}
+
+function buildBugDataString() {
+    var code = "// ===BEGIN_BUG" + "_DATA===\n";
+    code += "const DEFAULT_BUGS = [\n";
+    bugs.forEach(function(bug, i) {
+        code += "    { ";
+        code += "ticket: " + JSON.stringify(bug.ticket) + ", ";
+        code += "module: " + JSON.stringify(bug.module) + ", ";
+        code += "feature: " + JSON.stringify(bug.feature || "") + ", ";
+        code += "description: " + JSON.stringify(bug.description) + ", ";
+        code += "steps: " + JSON.stringify(bug.steps || "") + ", ";
+        code += "expected: " + JSON.stringify(bug.expected || "") + ", ";
+        code += "actual: " + JSON.stringify(bug.actual || "") + ", ";
+        code += "severity: " + JSON.stringify(bug.severity) + ", ";
+        code += "status: " + JSON.stringify(bug.status) + ", ";
+        code += "team: " + JSON.stringify(bug.team);
+        code += " }";
+        if (i < bugs.length - 1) code += ",";
+        code += "\n";
+    });
+    code += "];\n";
+    code += "// ===END_BUG" + "_DATA===";
+    return code;
+}
+
 // ===================== DATA =====================
 // ===BEGIN_BUG_DATA===
 const DEFAULT_BUGS = [
-    { ticket: "PB-001", module: "CRM", feature: "Customer List ? Refresh Required", description: "After creating a \"Customer\" user need to refresh button for it to display in the customer list", steps: "1. Go to CRM > Customers\n2. Click 'Add Customer'\n3. Fill in customer details and save\n4. Observe the customer list", expected: "Newly created customer should immediately appear in the customer list without needing to refresh", actual: "Customer does not appear in the list until the user manually refreshes the page.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-002", module: "CRM", feature: "Credit Note ? Issue Date", description: "Credit Note Issue Date field does not save changes ? stays on default date", steps: "1. Go to CRM > Credit Notes\n2. Click 'Add Credit Note'\n3. Select an invoice and reason\n4. Try to change the Issue Date field to a different date", expected: "Issue Date should update to the new value typed by the user", actual: "Date field remains stuck on default value (e.g. April 09, 2026) even after user types a new date. The input does not persist changes.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-003", module: "CRM", feature: "Order/Invoice ? Cascade Behavior", description: "Deleting an order sets linked invoice amount to ?0.00 and status to 'Reversed' instead of proper cleanup", steps: "1. Create an order with line items\n2. Create an invoice from that order\n3. Delete the order\n4. Check the invoice list", expected: "Either cascade-delete the linked invoice OR keep the invoice intact with original amounts", actual: "The Payment date on the Record Payment modal remains default/ cannot be changed.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-004", module: "Record", feature: "Opening Balance ? Negative Value", description: "When a user creates a record the opening balance in the field accepts a negative balance", steps: "1. Go to Record module\n2. Click to create a new record\n3. In the Opening Balance field, enter a negative number (e.g. -5000)\n4. Save the record", expected: "The Opening Balance field should reject negative values or display a validation error", actual: "The field accepts negative values without any validation, allowing records with negative opening balances to be saved.", severity: "Low", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-005", module: "Record", feature: "Selling Price ? Negative Value", description: "When creating a Record, the Selling price accepts a negative sign (-ve)", steps: "1. Go to Record module\n2. Click to create a new record\n3. In the Selling Price field, enter a negative number (e.g. -1000)\n4. Save the record", expected: "The Selling Price field should reject negative values or display a validation error", actual: "The field accepts negative values without any validation, allowing records with negative selling prices to be saved.", severity: "Low", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-006", module: "CRM", feature: "Order ? Discount Display", description: "The Discount shown the create new order modal should display either in % or in whole. This can easily confuse users on how the discount is been calculated.", steps: "1. Go to CRM > Orders\n2. Click 'Create Order'\n3. Add items and observe the Discount field\n4. Enter a discount value", expected: "The Discount field should clearly indicate whether the value is a percentage (%) or a flat amount, with a label or toggle to disambiguate", actual: "The Discount field shows no unit indicator ? users cannot tell if they are entering a percentage or a whole number amount, leading to confusion in order calculations.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-007", module: "CRM", feature: "Invoice - Discount", description: "Leading zero in Discount input field, which can affect an inexperience user.", steps: "1. Go to CRM > Orders\n2. Click 'Create Order'\n3. Add items and observe the form field\n4. Observe the leading zero/ default zero", expected: "The input should automatically change if user desire to use any figure other than zero, leading zero should not be either in front or back of discount value.", actual: "The defaults zero shows and forms a leading zero, also stay inbetween value input by the user.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-008", module: "CRM", feature: "CRM - Order", description: "There is a leading zero or default zero in the input field, which after user delete the desired output or clear field the zero, reacts as a leading zero for any other input.", steps: "1. Goto CRM\n2. Create New Order\n3. In the Create new modal, the quantity field has a leading zero", expected: "The input field should automatically change the zero to the desired input by user, when a user decides to clear field the field should not show a leading zero.", actual: "The leading zero stays in between the input, when cleared which can affect inexperience user.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-009", module: "CRM", feature: "CRM - INVOICE", description: "An error message \"Error creating inovie of validation failed\" appears when a user creates an invoice using the selections from payment status menu and selecting an option from Revenue Account drop down menu.", steps: "1. Goto CRM\n2. Select and create an Invoice\n3. Fill the modal form and select and input from both the Payment Status and Revenue Account drop down menu.\n4. Submit using Create Invoice", expected: "User should be able to select and option from the Payment Status and Revenue drop menu in order to complete the form filling.", actual: "The system shows and error which stops the flow of creation of the invoice after user finish filling the form.", severity: "Medium", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-010", module: "CRM", feature: "CRM - Quotation", description: "The Payment date on the Quotation modal remains default/ cannot be changed.", steps: "1. Goto CRM\n2. Navigate to invoice\n3. Select an Invoice\n4. Choose any of the invoice and record payment view\n5. Observe the Payment Date in the modal form is fixed/ Default", expected: "User should be able to change date as desired, based on the payment received", actual: "The payment Date modal filed shows a fixed date. April 16 2026", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-011", module: "CRM", feature: "CRM - Quotation", description: "The delete modals block the interface, no back button and notification of delete doesnt disappear", steps: "1. Go to CRM\n2. Create Quotation\n3. Delete Quotation", expected: "After a user delete quotation and it shows successful, the successful notification or confirmation should disappear", actual: "The modal after deleting remains and doesnt disappear, user need to refresh the page in order to access the platform again", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-012", module: "CRM", feature: "CRM - Quotation", description: "Description not stated in the modal form", steps: "1. Go to CRM\n2. Create Quotation\n3.  Add subject/ Customer note/ Terms and condition\n4. In the view, it shows an empty description\n4. Create Quote\n5. View and Observe Quote", expected: "The view quote should show the description while the modal form doesnt have description.", actual: "The view quote shows description with blank hypen (_)", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-013", module: "CRM", feature: "CRM - Quotation", description: "Date on view quote, shows invalid date", steps: "1. Goto CRM\n2. Create Quotation\n3. Enter the necessary details and select date\n4. View Quote after successful creation\n5. Observe the date on the view", expected: "The date should show the desired date selected by the user.", actual: "Date shows invalid after selection.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-014", module: "CRM", feature: "CRM - Quotation", description: "The Quantity, Rate and Amount columns on the view Quotation page are not properly aligned with their table headers.", steps: "1. Go to CRM > Quotation\n2. Create a Quotation with items\n3. View the Quotation \n4. Observe the items table layout", expected: "The Qty, Rate and Amount values should be properly aligned directly under their respective column headers in the items table.", actual: "The Qty, Rate and Amount values are misaligned from their column headers, making the quotation document look unprofessional and difficult to read.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-015", module: "CRM", feature: "CRM - Invoice", description: "Balance Due on Invoice shows ?0.00 even when Amount Paid is ?0.00 ? the balance should reflect the full outstanding total.", steps: "1. Go to CRM > Invoice \n2. View any invoice\n3. Observe Amount Paid and Balance Due", expected: "Balance Due should equal Total minus Amount Paid", actual: "Balance Due shows ?0.00 despite no payment recorded", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-016", module: "CRM", feature: "CRM - Invoice", description: "Discount column on invoice displays values that appear to be percentages (1%, 2%, 5%) as flat Naira amounts (?1.00, ?2.00, ?5.00)", steps: "1. Go to CRM > Invoice \n2. View any invoice \n3. Observe Amount Paid and Balance Due", expected: "The discount should display as %value not in naira", actual: "Each of the discount value added shows in Naira on view invoice", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-017", module: "CRM", feature: "CRM - Invoice", description: "Column alignment (Qty, Rate, Discount, Tax, Amount) is inconsistent on both the Quotation view and Invoice view pages ? values are not properly aligned under their respective headers.", steps: "1. Go to CRM > Invoice \n2. View any quotation or invoice with items \n3. Observe the items table columns", expected: "All column values should be properly aligned directly under their headers for a professional and readable document layout.", actual: "All column values should be properly aligned directly under their headers for a professional and readable document layout.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-018", module: "CRM", feature: "CRM - Invoice", description: "Invoice watermark shows \"SENT\" even when the invoice has not been sent ? the \"Send Invoice\" button is still visible, confirming the invoice is still in draft/unsent state.", steps: "1. Go to CRM > Invoice \n2. Create a new invoice \n3. View the invoice (do NOT click \"Send Invoice\") \n4. Observe the watermark on the invoice body", expected: "The watermark should show \"DRAFT\" or no watermark until the invoice has actually been sent via the \"Send Invoice\" button.", actual: "The watermark shows \"SENT\" immediately on viewing the invoice, even though it hasn't been sent yet.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-019", module: "CRM", feature: "Discount Calculation", description: "Negative Discount % Increases Grand Total", steps: "1. Go to CRM > Orders\n2. Create Order, select a customer\n3. Add an item (e.g., Audit Ledger Book, Qty: 5, Rate: 1500)\n4. Enter -10 in the Discount % field\n5. Observe the Grand Total", expected: "Negative discount values should be blocked or show a validation error", actual: "The system accepts -10% discount, calculates Discount as -750, and the Grand Total INCREASES from 7,500 to 8,250. This is a critical accounting logic error.", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-020", module: "CRM", feature: "Quantity Input", description: "Negative Quantity Input Shows Strange Concatenation", steps: "1. Go to CRM > Orders\n2. Create Order, add an item\n3. In the Quantity field, type -5", expected: "The field should either reject the negative sign or show a validation error", actual: "The minus sign is stripped but the number concatenates oddly ? typing -5 results in 05 appearing in the field. While it doesn't break calculations, it's confusing behavior.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-021", module: "Dashboard", feature: "Unit Selection for Services", description: "Service Records Show Goods-Only Units (pc, kg, etc.)", steps: "1. Go to Record module\n2. Click Add Records\n3. Select type = \"Services\"\n4. Scroll down to \"Unit\" dropdown\n5. Observe available units", expected: "Service records still show goods-centric units only (Piece, kg, Litre, etc.) and include \"Opening Stock\" and \"Quantity\" fields which don't apply to services.", actual: "Service-type records should show service-appropriate units (Hours, Days, Flat Fee, Per Session)", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-022", module: "Dashboard", feature: "Balance Sheet", description: "Balance Sheet Ghost Amount", steps: "1. Create a new account (fresh setup)\n2. Navigate to Records \n3. Open Balance Sheet view\n4. Observe the balances displayed", expected: "A fresh account with no transactions should show ?0.00 across all balance sheet entries", actual: "Balance Sheet displays a phantom ?1,00,000,000 that has no source transaction, record, or journal entry ? backend data initialization error causing incorrect financial reporting from day one", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-023", module: "Purchase", feature: "Vendor - Duplicate Email", description: "System allows creating multiple vendors with identical email addresses ? no duplicate validation exists", steps: "1. Go to Purchase > Vendor\n2. Click 'New Vendor'\n3. Create a vendor with email john.doe@example.com\n4. Create a second vendor with a different name but the same email john.doe@example.com\n5. Observe both vendors are created successfully", expected: "The system should reject duplicate email addresses or display a warning/validation error when attempting to create a vendor with an email that already exists.", actual: "Both vendors are created successfully with the same email address. No duplicate check exists.", severity: "Medium", status: "Void", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-024", module: "Purchase", feature: "Recurring Expenses - End Date Calculation", description: "End Date auto-calculation for daily recurring expenses is off by +1 day", steps: "1. Go to Purchase > Recurring Expenses\n2. Click 'New Recurring Expenses'\n3. Set Frequency = Daily\n4. Set Number of Occurrences = 12\n5. Set Start Date = April 23, 2026\n6. Observe the auto-calculated End Date", expected: "End Date should be May 04, 2026 (Start Date + Occurrences - 1 = Apr 23 + 11 days = May 04)", actual: "End Date shows May 05, 2026 ? one day more than expected. The calculation adds the full number of occurrences as days instead of (occurrences - 1).", severity: "Low", status: "Void", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-025", module: "Purchase", feature: "Expense/Recurring - Save Button", description: "Save and Create buttons on Expense and Recurring Expense forms are frequently unresponsive despite all required fields being filled", steps: "1. Go to Purchase > Expenses\n2. Click '+ Create' to add a new expense\n3. Fill all required fields (Name, Type, Account, Vendor, Amount, Paid Through)\n4. Click the Save button\n5. Observe the button does not respond or trigger the confirmation modal", expected: "The Save button should immediately trigger the confirmation modal when all required fields are filled.", actual: "The Save button frequently fails to register clicks. Users must scroll to different positions, re-select dropdown values, and click multiple times before the button responds. This occurs on both Expense and Recurring Expense creation forms.", severity: "High", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-026", module: "Purchase", feature: "Expense - Negative Amount", description: "The Amount field on Expense creation accepts negative values without validation", steps: "1. Go to Purchase > Expenses\n2. Click '+ Create'\n3. Fill in expense details\n4. Enter a negative value (e.g. -50000) in the Amount field\n5. Save the expense", expected: "The Amount field should reject negative values or display a validation error. Expenses cannot have negative amounts.", actual: "The field accepts negative values without any validation, allowing expenses with negative amounts to be saved. This is an accounting logic error consistent with PB-004 and PB-005 in the Record module.", severity: "Medium", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-027", module: "Purchase", feature: "", description: "Error: Unpaid Purchase Expense incorrectly requires payment account", steps: "1. Go to Purchase > Expenses\n2. Click '+ Create'\n3. Fill in expense details\n4. Under Financial information\n5. Amount to pay now\n6. Paid through", expected: "Since  Amount to pay now is optional, then paid through should not be set to valid. Only require Paid Through account when Amount to Pay Now is greater than 0.", actual: "The platforms shows error due to paid through not filled", severity: "Medium", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-028", module: "CRM", feature: "CRM - Invoice", description: "Discount column on Invoice view displays a bare number (e.g. '6') with no percentage sign (%) or currency symbol, making it unclear whether the value is 6% or ?6. The summary section shows '% 60' instead of '6%' or '?60.00'.", steps: "1. Go to CRM > Invoice\n2. View any invoice that has a discount applied (e.g. Order ORD/0002)\n3. Observe the 'Discount' column in the items table\n4. Observe the 'Discount' line in the subtotal summary", expected: "The Discount column should display '6%' (with a percentage symbol) to clearly indicate it is a percentage discount. The summary should show '?60.00' (the calculated Naira value) or '6%' consistently.", actual: "The items table shows a bare '6' under Discount with no unit. The summary section shows '% 60' (percent sign before the number, wrong format). Users cannot tell if the discount is a percentage or flat amount.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-029", module: "Production", feature: "Production - Edit Action", description: "Edit action on production records is permanently greyed out/disabled ? users cannot modify any existing production record regardless of status.", steps: "1. Go to Production module\n2. Locate any existing production record (e.g. PROD-0001 or PROD-0002)\n3. Click the 3-dot action menu (?) on the right side of the row\n4. Observe the 'Edit' option in the dropdown", expected: "The Edit option should be clickable and open a pre-filled form allowing the user to modify production details such as quantity, dates, assigned employee, or raw materials.", actual: "The Edit option is permanently greyed out and unclickable for all production records regardless of their status (In Progress, Completed, etc.). Users are forced to delete and recreate records to make any corrections.", severity: "High", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-030", module: "Production", feature: "Production - Quantity Validation", description: "Production creation form accepts zero and negative values in the 'Quantity to Produce' field without any validation or error message.", steps: "1. Go to Production module\n2. Click '+ Create' to open the production creation form\n3. Fill in Product Name with any value\n4. Enter 0 or -10 in the 'Quantity to Produce' field\n5. Fill remaining required fields and click Save", expected: "The system should reject zero or negative quantity values with a clear validation error message (e.g. 'Quantity must be greater than 0'). Production runs with zero or negative quantities are logically invalid.", actual: "The form accepts any numeric value including 0 and negative numbers without validation. This can result in invalid production records and could corrupt inventory stock calculations when production is marked complete.", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-031", module: "Production", feature: "Production - Status Badge", description: "Production status badge displays 'In_progress' with an underscore instead of properly formatted 'In Progress' with a space.", steps: "1. Go to Production module\n2. Observe the Status column in the Product Assembling History table\n3. Look at any record with an in-progress status", expected: "The status badge should display 'In Progress' (two words with a space) in a clean, professional format consistent with standard UI conventions.", actual: "The status badge shows 'In_progress' with an underscore character between the words. This appears to be a raw database/enum value being displayed directly without formatting, giving an unprofessional appearance.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-032", module: "Production", feature: "Production - Product Name Input", description: "Product Name text field on the Create New Production form duplicates typed input ? text appears twice in the field.", steps: "1. Go to Production module\n2. Click '+ Create' to open the creation form\n3. Click into the 'Product Name' text field\n4. Type any product name (e.g. 'Copper Cable Bundle')\n5. Observe the value in the field", expected: "The Product Name field should show exactly what the user typed ? e.g. 'Copper Cable Bundle'.", actual: "The field displays the input text twice ? e.g. 'Copper Cable BundleCopper Cable Bundle'. This is a critical data integrity issue as production records will be saved with corrupted/duplicated product names. Likely caused by a duplicate event listener or double state-binding on the input field.", severity: "Critical", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-033", module: "Production", feature: "Production - List Refresh Required", description: "After creating a new production record, user must manually refresh the page before the new record appears in the Product Assembling History table.", steps: "1. Go to Production module\n2. Click '+ Create' to open the creation form\n3. Fill in all required fields (Customer, Product Name, Quantity, Dates)\n4. Click Save and confirm creation\n5. Observe the Product Assembling History table on the Production page", expected: "The newly created production record should immediately appear in the Product Assembling History table and the KPI cards (Total Products, Work in Progress) should update in real-time without requiring a page refresh.", actual: "After successful creation, the table does not update. The new record is missing from the list and KPI counts remain unchanged. The user must manually refresh the browser or click away and return to the Production page for the new record to appear.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-034", module: "Production", feature: "Production - View Page Navigation", description: "Production detail View page has no Back or Cancel button ? user is stranded and must use the browser back button or re-click Production in the sidebar to return to the main list.", steps: "1. Go to Production module\n2. Click the 3-dot action menu (?) on any production record\n3. Click 'View' to open the production detail page\n4. Observe the page layout for any navigation buttons (Back, Cancel, Close, Return to List)", expected: "The View page should include a clearly visible 'Back' or 'Return to List' button that navigates the user back to the main Production list page, consistent with standard UX patterns for detail/view pages.", actual: "There is no Back, Cancel, or Return button on the production View page. The user is forced to use the browser's back button or manually click 'PRODUCTION' in the sidebar navigation to return. This is a UX friction point that disrupts workflow.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-035", module: "Assets", feature: "Asset KPI - Acquired Count", description: "\"Asset Acquired\" KPI on the main Asset list page shows 0 even after successfully creating a new asset ? Total Assets shows 1 but Acquired stays at 0.", steps: "1. Go to Assets > List of Assets\n2. Click 'Add' under Fixed Assets\n3. Complete the 4-step wizard and confirm\n4. Return to the Asset list page\n5. Observe the KPI cards", expected: "All four KPI cards should reflect the new asset: Total Assets = 1, Value = ?450,000, Asset Acquired = 1, Sold Assets = 0.", actual: "Total Assets shows 1 and Value shows ?450,000 correctly, but 'Asset Acquired' remains at 0. The counter does not increment on asset creation.", severity: "Medium", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-036", module: "Assets", feature: "Asset Dates - Off-by-One", description: "All date fields in Assets sub-modules (Lease, Depreciation, Lease Return) save dates one day before the user's selection ? a timezone/UTC conversion bug.", steps: "1. Go to Assets > Lease Assets\n2. Click '+ Add Assets' and select any asset\n3. Set Start Date = May 12, 2026\n4. Set End Date = June 12, 2026\n5. Save the lease\n6. View the lease record in the table", expected: "Lease Start should show May 12, 2026 and End should show June 12, 2026 ? exactly as selected.", actual: "Dates display as May 11, 2026 and June 11, 2026 ? one day before what was selected. This affects all date fields across Asset sub-modules and can cause incorrect lease period calculations and depreciation pro-rata errors.", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-037", module: "Assets", feature: "Asset Action Menu - No Edit", description: "The asset action menu (?) in the Fixed Assets category list only shows 'View Asset' and 'Delete' ? the Edit option is completely missing, not just disabled.", steps: "1. Go to Assets > List of Assets\n2. Click 'View' on Fixed Assets category\n3. On the asset row, click the ? action menu\n4. Observe the dropdown options", expected: "The action menu should show three options: View Asset, Edit Asset, and Delete ? allowing users to modify asset details.", actual: "Only 'View Asset' and 'Delete' appear. There is no Edit option at all. Users cannot modify any asset data after creation and must delete and recreate to fix errors, losing all linked lease/depreciation/maintenance history.", severity: "High", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-038", module: "Assets", feature: "Asset Category - View Button Loading", description: "The 'View' button on Asset category cards (e.g., Fixed Assets) frequently gets stuck in an infinite loading spinner and never navigates to the category list.", steps: "1. Go to Assets > List of Assets\n2. Click 'View' next to the Fixed Assets category\n3. Observe the button state", expected: "Clicking 'View' should immediately navigate to the Fixed Assets list showing all assets in that category.", actual: "The button enters an infinite loading/spinner state and never navigates. Occurred 3+ times during testing. Only a full page refresh resolves it. Sometimes works on first click, sometimes takes 4-5 attempts.", severity: "High", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-039", module: "Assets", feature: "Leased Assets - Hidden from Depreciation/Maintenance", description: "Assets with 'Leased' status are completely hidden from the asset selection modal in Depreciation and Maintenance modules ? owners cannot depreciate or maintain leased-out assets.", steps: "1. Create an asset and lease it out\n2. Go to Assets > Depreciation > '+ Add Asset'\n3. In the selection modal, check Fixed Assets category\n4. Observe: the leased asset does not appear\n5. Same for Maintenance > '+ Add Assets'", expected: "Leased assets should still appear in Depreciation and Maintenance selection. The company still owns the asset, so it still depreciates and may still need maintenance.", actual: "The asset disappears entirely from both selection modals when its status is 'Leased'. It only reappears after performing a Lease Return. This violates accounting standards (IFRS/GAAP) which require depreciation regardless of lease status.", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-040", module: "Assets", feature: "Lease Return - Condition Dropdown", description: "The 'Condition on Return' dropdown in the Lease Return form is nearly unusable ? options render below the visible modal area and require 10+ click attempts to select.", steps: "1. Go to Assets > Lease Return\n2. Click '+ Add Lease Return' and select a leased asset\n3. Fill in Reason and Return Date\n4. Scroll down and try to click the 'Condition on Return' dropdown\n5. Try to select 'Good' from the options", expected: "The dropdown should open cleanly and allow immediate selection of a condition (Good, Fair, Poor, Damaged).", actual: "The dropdown options render behind or below the visible modal area. Clicking the dropdown does nothing or times out repeatedly. Took 10+ attempts and specific scroll positioning to finally select 'Good'. This is the most frustrating UI bug in the Assets module.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-041", module: "Assets", feature: "Asset Detail - Broken Image", description: "Asset detail view page shows a broken/empty image placeholder at the top even though no image was uploaded ? the creation form has no image upload field.", steps: "1. Go to Assets > List of Assets\n2. Click 'View' on Fixed Assets\n3. Click ? > 'View Asset' on any asset\n4. Observe the top of the detail page", expected: "If no image was uploaded, the image section should be hidden entirely. Alternatively, a proper placeholder (e.g., asset category icon) should be shown.", actual: "A broken image icon/grey placeholder box appears at the top of the asset detail page. Since the 4-step creation wizard has no image upload field, this will always appear broken for every asset.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-042", module: "Inventory", feature: "Inventory - Item Creation Data Loss", description: "Inventory items show success confirmation modal after creation but silently fail to persist ? items don't appear in the Inventory List despite successful save feedback.", steps: "1. Go to Inventory > Item List\n2. Click create/add new item\n3. Fill in all fields: Name = 'Copper Wire', Unit = Piece, Cost = 2000, Qty = 200\n4. Select Cost Account and Sales Account\n5. Click Save ? observe the success modal appears\n6. Return to Inventory List\n7. Check if 'Copper Wire' appears", expected: "After the success modal confirms creation, the item should appear in the Inventory List immediately or after refresh.", actual: "The success modal shows 'Item created successfully' but the item never appears in the list. Even after multiple page refreshes, only previously created items are visible. This is silent data loss ? the worst type of bug because the user believes their data was saved.", severity: "Critical", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-043", module: "Inventory", feature: "Inventory - List Loading Failure", description: "The Inventory List page intermittently shows 'Failed to load inventory items' error banner ? the entire item table is empty and unusable until manual refresh resolves it.", steps: "1. Go to Inventory > Item List\n2. Observe the page load\n3. If items load, navigate away and return\n4. Repeat 3-5 times", expected: "The Inventory List should load reliably every time, showing all created items with their stock levels.", actual: "The page intermittently shows a red error banner 'Failed to load inventory items' with an empty table. No items are visible. Refreshing 2-3 times usually resolves it, but it breaks trust in the system's reliability. Likely an API timeout or race condition on the data fetch.", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-044", module: "Assets", feature: "Asset Forms - Leading Zero in Currency Fields", description: "Currency input fields across Asset sub-modules (Lease Amount, Amount Paid, Salvage Value, etc.) don't clear the default zero ? typing a value produces '050000' instead of '50000'.", steps: "1. Go to Assets > Lease Assets\n2. Click '+ Add Assets' and select any asset\n3. Click into the 'Lease Amount' field (which shows default value 0)\n4. Type 50000 without clearing the field first\n5. Observe the value in the field", expected: "The default zero should be automatically replaced when the user starts typing a new value, showing '50000' cleanly.", actual: "The leading zero remains and the typed value appends after it, resulting in '050000'. The user must manually select-all and delete the zero before typing. This is the same pattern as PB-007 and PB-008 in the CRM module ? a platform-wide input handling issue that also affects Amount Paid, Amount Left To Pay, and Salvage Value fields in Assets.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-045", module: "CRM", feature: "CRM - Order Discount Display", description: "When entering a discount of 10 in the Discount % column on Create Order, the subtotal summary shows 'Discount: % 100' ? the format is wrong and the value doesn't match the input.", steps: "1. Go to CRM > Order\n2. Click 'Create Order'\n3. Select a customer (e.g. IZZY Lagbegba)\n4. Add an item (e.g. ECOIL, Qty: 1, Rate: 1000)\n5. Enter 10 in the Discount % field\n6. Observe the subtotal summary section below the items table", expected: "The Discount line in the summary should clearly show either '10%' (the percentage entered) or '?100.00' (the calculated Naira amount). The format should be consistent and unambiguous.", actual: "The summary shows 'Discount: % 100' ? the percent sign is placed before the number in the wrong position, and '100' is the calculated Naira value but displayed with a '%' prefix making it look like 100%. This is confusing: is the discount 10%, ?100, or 100%? The Grand Total (900) is correct but the discount display misleads the user.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-046", module: "Inventory", feature: "Inventory - Error Message Wording", description: "Inventory creation form validation error says 'Created by is required' ? the phrasing is unclear and unprofessional. Should use proper wording like 'Please select an employee'.", steps: "1. Go to Inventory > Inventory List\n2. Click to create a new inventory item\n3. Fill in Name, Quantity, Selling Price, and other fields\n4. Leave the 'Created By' dropdown unselected (showing 'Select Employee')\n5. Click Save", expected: "The validation error should display a clear, user-friendly message such as 'Please select an employee' or 'Employee selection is required' ? using proper sentence casing and actionable language.", actual: "The error message displays 'Created by is required' in red below the dropdown. This reads like a raw database field name turned into a sentence. It's grammatically awkward ('Created by' is not a noun) and doesn't tell the user what action to take. Should follow the pattern: 'Please select [field purpose]' not '[database_column] is required'.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-047", module: "Assets", feature: "Lease- Assets", description: "User cannot back date the calender on start date, showing present day calender", steps: "1. Go to Assets\n2. Select Lease Assets\n3. Add Assets from the menue\n4. Check and observe the start date on form", expected: "User should be able to select past and present day from the calendar", actual: "Calender only shows present day while the previous date are grey, cant be selected", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-048", module: "Production", feature: "Add - Employment", description: "The Add New Employee modal opens and accepts data, but save failed due to Department ID dependency. When non-numeric department ID was entered, system returned raw validation text: \"Invalid input: expected number, received NaN\".", steps: "1. Goto\n2. Production > Create > Employee dropdown \n3. Add New Employee\nResult: Partially Passed / Blocked", expected: "User should be able to create an employee and proceed with form completion.", actual: "User cannot successfully create an employee from the embedded shortcut unless the id issue is cleared", severity: "High", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-049", module: "Purchase", feature: "Vendor - Creation", description: "Vendor creation doesnt auto update, when creating expenses", steps: "1. Go to Purchase > Vendor\n2. Click 'New Vendor'\n3. After a successful creation\n4.Observe the new Vendor is missing under selection", expected: "The new vendor created should automatically be displayed for user to select and continue the form creation", actual: "The new vendor created do not appear leading to user refreshing the page before the platform will display the created vendor.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-050", module: "Purchase", feature: "Expense Details - Payment Voucher", description: "Payment Voucher on expenses do not display Reference/Notes", steps: "1. Goto Expenses\n2. Create new expenses\n3. Complete form and input reference notes\n4. After a successful creation check the note on payment voucher", expected: "The notes written by user in the Reference modal should be display along the voucher information.", actual: "The notes written by the user is missing in the voucher.", severity: "Low", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-051", module: "Assets", feature: "Asset under Fixed Assets", description: "Asset cost entered as 250,000 is saved/displayed as NGN 250.00", steps: "1. Go to Assets > List of Assets.\n2. Add asset under Fixed Assets.\n3. Enter Asset Cost / Acquisition Cost as 250,000.\n4. Complete all required fields and save.\n5. Open Asset list and Asset details.", expected: "Asset cost should display as NGN 250,000.00.", actual: "Asset cost displays as NGN 250.00.", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-052", module: "Assets", feature: "Assets / Depreciation", description: "Depreciation date saves one day earlier than selected date", steps: "1. Go to Assets > Depreciation.\n2. Add asset for depreciation.\n3. Select Depreciation Period From as 01 May 2026.\n4. Select Depreciation Period To as 01 Jun 2026.\n5. Calculate and confirm depreciation.\n6. Check depreciation list.", expected: "Depreciation date should show May 01, 2026.", actual: "Depreciation list shows Apr 30, 2026.", severity: "High", status: "Fixed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-053", module: "Assets", feature: "Assets / Depreciation", description: "Depreciation calculation uses incorrect asset cost after asset cost is saved wrongly", steps: "1. Create asset with cost 250,000.\n2. Open Depreciation.\n3. Add the asset.\n4. Observe Cost Price.\n5. Calculate depreciation.", expected: "Depreciation should calculate using NGN 250,000.00.", actual: "Depreciation uses Cost Price 250 and calculates Net Book Value around NGN 249.93.", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-054", module: "Purchase", feature: "Purchase / Payment", description: "Purchase payment date displays  09 June 2026 as a constant date irrespective of the date input by the user.", steps: "1. Go to Purchase > Expenses.\n2. Create expense with Purchase Date 01 June 2026.\n3. Pay full amount immediately.\n4. Save expense.\n5. Go to Purchase > Payment.", expected: "Payment Date should match the desired input date by user Jun 01, 2026.", actual: "Payment Date displays June 09, 2026. which is present date, not the date input by user", severity: "High", status: "Open", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-055", module: "Global", feature: "UI / Overlay Conflict", description: "Floating \"Need Help?\" Chat Button Blocks Save/Submit Buttons on Form Pages", steps: "1. Log in to test.primbooks.com\n2. Navigate to Purchase ? Expenses\n3. Click \"+ Add\" to open the New Single Expense form\n4. Fill in Expense Name, select Account, enter Amount\n5. Attempt to click the \"Save\" button at the bottom-right of the form", expected: "The \"Save\" button should be clickable and the expense should be saved.", actual: "The floating \"Need Help? Talk to Customer Care\" chat button physically overlaps and covers the \"Save\" button. Clicking the Save button area instead triggers the chat widget. The user cannot save the form without first scrolling up or finding a way to dismiss the overlay.", severity: "Critical", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-056", module: "Global", feature: "Create - Employee", description: "At any point where a user needs to create an employment in any part of the modules, user need to abaddon page and create a Department", steps: "1. Goto Production\n2. In the form, use the add new employee\n3. Creation of employee needs a department to be selected\n4. Observe the department is compulsory and without this an employee cannot be created", expected: "User need to complete the form without department, or the modal should give options of department ahead.", actual: "This is a blocker to employee creation because use needs to abaddon page and create an employee in order to proceed", severity: "High", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-057", module: "Dashboard", feature: "Dept - Company Branch", description: "Company branch selector only has 4 selector without ordinary \" Branch office\"", steps: "1. Goto Payroll MGT\n2. Select Add dept\n3. Observe the options in the selector\n-Headquarters\n-New york Branch\n-London Branch\n- Remote", expected: "The selector should have Branch Office without location been attached since there is an headquarters option", actual: "Only this 4 options are present in the selector \n-Headquarters\n-New york Branch\n-London Branch\n- Remote", severity: "Low", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-058", module: "Inventory", feature: "Create New Inventory", description: "Network Error: Upload 500 when user try to upload picture of goods", steps: "1. Goto Inventory\n2. Create New Inventory\n3. Fill the required form\n4. Upload an image\n5. Submit form", expected: "The form should be submitted as expected", actual: "Network error: Upload failed: 500\n\nappear which inhinders the flow and form cannot be submitted", severity: "Medium", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-059", module: "Global", feature: "Login", description: "When a user logs out and is redirected to the login page, navigating back in the browser or directly typing https://test.primbooks.com/dashboard restores full access to the dashboard. The session token is not properly cleared on the server side or client state is cached unsafely.", steps: "1. Log into https://test.primbooks.com/login.\n2. Click the Logout button.\n3. Wait for the redirect to /login.\n4. Type https://test.primbooks.com/dashboard in the URL bar and press enter.\n5. The full dashboard, charts, and metrics load.", expected: "Should request for login, without login the platform should not display any dashboard", actual: "Anyone using a shared computer could access a business's sensitive financial dashboard simply by clicking the browser's \"Back\" button after the owner has clicked \"Logout\"", severity: "Critical", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-060", module: "Inventory", feature: "Create Inventory", description: "Network error: Unable to generate unique material code. Please try again.", steps: "1. Goto Inventory\n2. Create New Inventory\n3. Fill the required form\n4. Upload an image\n5. Submit form", expected: "User should be able to complete and submit form as expected.", actual: "Network error: Unable to generate unique material code. Please try again.\nThis error message serve as a blocker, User cannot create new inventory under raw materials.", severity: "High", status: "Closed", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-061", module: "Assets", feature: "Fixed -Asset", description: "Selection of date using the shift month selector, display a prompt,  final Create Confirmation =  Are you sure you want to create \"adasd\" as an asset?", steps: "1. Go to Assets > List of Assets.\n2. Add asset under Fixed Assets.\n3. Enter the required details\n4. Use the date/Month selector to back date or shift date forward\n5. Observe the final create confirmation\n6. User clicks on this and the modal closes as successful creation", expected: "The date/month selector should shift the date backward or ahead as desired by user.", actual: "The date selector shows: a final create confirmation prompt = User clicks on this and the modal closes as successful creation without user finishing the input.", severity: "Medium", status: "Closed", team: "Frontend", source: "Senior QA Audit" },
-    { ticket: "PB-062", module: "CRM", feature: "Credit Note", description: "Credit Note do not display subject/customer notes/ terms & condition", steps: "1. Goto CRM\n2. Create credit note\n3. Complete form and input reference notes\n4. After a successful creation check the notes input", expected: "All input on subject, customer notes with terms & condition as input by user should be displayed", actual: "The following are not on the credit note displayed view", severity: "Low", status: "Open", team: "Backend", source: "Senior QA Audit" },
-    { ticket: "PB-063", module: "", feature: "Session not invalidated after logout or interru...", description: "[Ref: BUG-001] Session not invalidated after logout or interruption - user can return to active session without re-authenticating", steps: "1. Log in  2. Log out or close browser tab  3. Re-open the application URL", expected: "User must be required to log in again before accessing any part of the system", actual: "System resumes the previous session without prompting for login", severity: "Critical", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-064", module: "Authentication", feature: "Returning user greeting shown to new users duri...", description: "[Ref: BUG-002] Returning user greeting shown to new users during sign-up", steps: "1. Navigate to sign-up screen as a brand new user", expected: "Screen should display 'Welcome' for a new user", actual: "Screen displays 'Welcome Back' - intended for returning users only", severity: "Medium", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-065", module: "Authentication", feature: "Organisation address field is hidden during pro...", description: "[Ref: BUG-003] Organisation address field is hidden during profile setup - user cannot fill it", steps: "1. Begin organisation profile setup  2. Look for the address field", expected: "Address field should be visible and fillable during initial setup", actual: "Address field is hidden and inaccessible", severity: "High", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-066", module: "Authentication", feature: "State field in organisation profile is a free-t...", description: "[Ref: BUG-004] State field in organisation profile is a free-text input instead of a dropdown like Country", steps: "1. Go to organisation profile setup  2. Locate the State field", expected: "State field should be a dropdown, consistent with the Country field", actual: "State field is free-text input - inconsistent UI, prone to data entry errors", severity: "Medium", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-067", module: "", feature: "Company logo uploaded during organisation setup...", description: "[Ref: BUG-005] Company logo uploaded during organisation setup does not persist - must be re-uploaded on the dashboard", steps: "1. Upload company logo during organisation setup  2. Navigate to dashboard", expected: "Logo should appear automatically wherever company info is displayed", actual: "Logo does not carry over - user must upload it again on the dashboard", severity: "High", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-068", module: "", feature: "Subscription upgrade notification shows wrong p...", description: "[Ref: BUG-006] Subscription upgrade notification shows wrong plan name - says 'Starter Plan' instead of 'Pro Plan'", steps: "1. Upgrade from Free to Pro plan  2. Check the notification/confirmation message", expected: "Notification should read 'Pro Plan activated successfully'", actual: "Notification reads 'Starter Plan activated successfully'", severity: "High", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-069", module: "", feature: "Confirmation and notification emails not receiv...", description: "[Ref: BUG-007] Confirmation and notification emails not received after sign-up", steps: "1. Register a new account with a valid email  2. Check inbox and spam", expected: "Sign-up confirmation email should arrive promptly", actual: "No email received - neither confirmation nor any subsequent notifications", severity: "Critical", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-070", module: "Authentication", feature: "Password field does not enforce a strong passwo...", description: "[Ref: BUG-008] Password field does not enforce a strong password policy - accepts weak passwords", steps: "1. Go to sign-up or password creation  2. Enter a simple password e.g. 'password123'", expected: "System should require uppercase, lowercase, numbers, and special characters", actual: "Weak passwords accepted with no validation warning", severity: "Critical", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-071", module: "Dashboard", feature: "Recording an expense does not update the Total ...", description: "[Ref: BUG-009] Recording an expense does not update the Total Expenses value on the dashboard", steps: "1. Record a new one-time expense  2. Return to dashboard and check Total Expenses card", expected: "Total Expenses value should increase to reflect the new entry", actual: "Dashboard Total Expenses value does not update after expense is recorded", severity: "High", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-072", module: "Dashboard", feature: "Cannot create a vendor from the expenses page d...", description: "[Ref: BUG-010] Cannot create a vendor from the expenses page dropdown - vendor list page also fails to load", steps: "1. Go to Expenses  2. Try to add a vendor via the expenses page dropdown  3. Navigate to the Vendors page", expected: "Vendor should be creatable from the expenses dropdown; Vendors page should load", actual: "Vendor creation from expenses page does not work; Vendors page failed to load from that context", severity: "High", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-073", module: "Record", feature: "Numeric input fields (Opening Balance, Selling ...", description: "[Ref: BUG-011] Numeric input fields (Opening Balance, Selling Price, Purchase Price) are restricted - cannot enter values beyond 3-4 digits/decimal places", steps: "1. Navigate to Record  2. Open or create a product  3. Attempt to edit Opening Balance, Selling Price, or Purchase Price with a larger value", expected: "Fields should accept standard financial values of any size", actual: "Input is cut off or restricted - Dami found the limit at 2 decimal places; Hellen found Opening Balance restricted to 3 digits. Root cause is the same numeric input limitation.", severity: "High", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-074", module: "CRM", feature: "Order status cannot be changed to 'Delivered' o...", description: "[Ref: BUG-012] Order status cannot be changed to 'Delivered' or 'Cancelled'", steps: "1. Create an order  2. Attempt to change status to Delivered  3. Attempt to change status to Cancelled", expected: "Status should update correctly to the selected value", actual: "Both Delivered and Cancelled status changes fail", severity: "High", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-075", module: "CRM", feature: "Customer name does not appear in the orders tab...", description: "[Ref: BUG-013] Customer name does not appear in the orders table after saving a new order", steps: "1. Create a new order and assign a customer  2. Save the order  3. View the orders list", expected: "Customer name should be visible in the orders table row", actual: "Customer name column is blank - order saves but name is not shown", severity: "Medium", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-076", module: "CRM", feature: "System does not reject or warn when a payment e...", description: "[Ref: BUG-014] System does not reject or warn when a payment exceeding the invoice amount is recorded", steps: "1. Create an invoice  2. Attempt to record a payment amount greater than the invoice total", expected: "System should reject the payment or show a clear warning", actual: "Overpayment is accepted without any validation or warning", severity: "High", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-077", module: "CRM", feature: "Adding a new customer returns a Server Error 500", description: "[Ref: BUG-015] Adding a new customer returns a Server Error 500", steps: "1. Navigate to CRM - Customer  2. Click Add New Customer  3. Fill in all details and save", expected: "Customer should be created and appear in the list", actual: "Server Error 500 returned - customer not created. Note: this test passed in an earlier session for Hellen, suggesting an intermittent or environment-dependent issue.", severity: "Critical", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-078", module: "CRM", feature: "Deleting a customer with existing invoices does...", description: "[Ref: BUG-016] Deleting a customer with existing invoices does not warn or prevent deletion - customer can be deleted silently  Note: Omowunmi recorded this as Fail; Hellen recorded this as Pass in a separate session. Dev team to investigate and confirm consistent behaviour.", steps: "1. Create a customer with at least one linked invoice  2. Attempt to delete that customer", expected: "System should warn the user or prevent deletion when linked invoices exist", actual: "Conflicting results across testers - Omowunmi: deletion proceeds without warning (Fail). Hellen: warning appeared (Pass). Behaviour may be inconsistent.", severity: "High", status: "Void", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-079", module: "CRM", feature: "Debit and Credit values in the Opening Balance ...", description: "[Ref: BUG-017] Debit and Credit values in the Opening Balance section when creating a customer are not formatted with comma separators - large numbers are difficult to read", steps: "1. Go to CRM - Add New Customer  2. Locate the Opening Balance section  3. Observe Debit and Credit field values", expected: "Values should display with comma formatting e.g. 1,000,000", actual: "Numbers display without commas - difficult to read. Also noted in other parts of the system.", severity: "Medium", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-080", module: "CRM", feature: "Creating a quotation and saving as Draft fails", description: "[Ref: BUG-018] Creating a quotation and saving as Draft fails", steps: "1. Navigate to CRM - Quotation  2. Create a new quotation  3. Save as Draft", expected: "Quotation should be saved with Draft status", actual: "Save as Draft fails - quotation not saved", severity: "High", status: "Void", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-081", module: "CRM", feature: "Sending a quotation to a customer fails", description: "[Ref: BUG-019] Sending a quotation to a customer fails - status does not change to Sent", steps: "1. Create a quotation  2. Attempt to send it to the customer", expected: "Status should change to Sent after sending", actual: "Send action fails - status does not update to Sent", severity: "High", status: "Open", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-082", module: "CRM", feature: "Converting an accepted quotation to an order fails", description: "[Ref: BUG-020] Converting an accepted quotation to an order fails", steps: "1. Create a quotation  2. Mark it as Accepted  3. Attempt to convert it to an order", expected: "An order should be created with the same items and values as the quotation", actual: "Conversion fails - no order is created", severity: "High", status: "Void", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-083", module: "CRM", feature: "Issuing a credit note (changing status from Dra...", description: "[Ref: BUG-021] Issuing a credit note (changing status from Draft to Issued) fails", steps: "1. Create a credit note against an invoice (Draft)  2. Attempt to issue it / change status to Issued", expected: "Status should change to Issued", actual: "Status change fails - credit note remains in Draft", severity: "High", status: "Open", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-084", module: "CRM", feature: "Recording a refund payment tied to a credit not...", description: "[Ref: BUG-022] Recording a refund payment tied to a credit note fails", steps: "1. Create and issue a credit note  2. Attempt to record a refund payment against it", expected: "Payment should be reflected and credit note status should update", actual: "Refund payment recording fails", severity: "High", status: "Open", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-085", module: "Production", feature: "Pro plan users are completely blocked from crea...", description: "[Ref: BUG-023] Pro plan users are completely blocked from creating production employees - the Department field is required but can only be configured under Payroll (Business plan only)", steps: "1. Log in as a Pro plan user  2. Navigate to Production  3. Attempt to add an employee via 'Add Employee'  4. Observe Department field is required  5. Note Department setup is only accessible on Business plan", expected: "Pro plan users should be able to use Production without needing a Business plan feature. Either: (a) make Department field optional for Pro users, or (b) unlock Department creation step within Pro plan while keeping rest of Payroll locked", actual: "Pro plan users hit a dead-end - cannot complete employee creation due to a mandatory field that requires a higher plan", severity: "High", status: "Closed", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-086", module: "Purchase", feature: "Recording a one-time expense returns Error 404", description: "[Ref: BUG-024] Recording a one-time expense returns Error 404 - expense cannot be saved", steps: "1. Navigate to Purchase - Expenses  2. Click to record a new one-time expense  3. Fill in all fields and attempt to save", expected: "Expense should be saved and appear in the list", actual: "Error 404 returned - expense not created", severity: "Critical", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-087", module: "Purchase", feature: "No option to edit an existing expense entry", description: "[Ref: BUG-025] No option to edit an existing expense entry - edit function is missing", steps: "1. Navigate to Purchase - Expenses  2. Open or hover over an existing expense entry  3. Look for an edit option", expected: "An edit option should be available on expense entries", actual: "No edit button or option exists - expenses cannot be modified after creation", severity: "High", status: "Open", team: "Frontend", source: "PM & Team" },
-    { ticket: "PB-088", module: "Finance", feature: "Adding a new account to the Chart of Accounts f...", description: "[Ref: BUG-026] Adding a new account to the Chart of Accounts fails", steps: "1. Navigate to Finance - Chart of Accounts  2. Attempt to add a new account", expected: "New account should appear under the correct type/category", actual: "Account creation fails - error returned", severity: "High", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-089", module: "Finance", feature: "Creating a balanced manual journal entry (debit...", description: "[Ref: BUG-027] Creating a balanced manual journal entry (debit = credit) returns an error", steps: "1. Navigate to Finance - Journal  2. Create a new journal entry where debit equals credit  3. Attempt to save", expected: "Entry should save successfully", actual: "An error is returned and the entry is not saved", severity: "High", status: "Open", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-090", module: "Settings", feature: "Profile picture cannot be updated", description: "[Ref: BUG-028] Profile picture cannot be updated - upload fails or does not save", steps: "1. Navigate to Settings - My Profile  2. Attempt to upload or change the profile picture", expected: "Profile picture should update and be displayed", actual: "Profile picture change fails - unable to update", severity: "Medium", status: "Closed", team: "Backend", source: "PM & Team" },
-    { ticket: "PB-091", module: "Settings", feature: "Currency setting appears twice in Settings", description: "[Ref: BUG-029] Currency setting appears twice in Settings - once under Regional Settings (within My Profile) and again as a standalone entry", steps: "1. Navigate to Settings  2. Observe the currency settings", expected: "Currency should appear in one location only", actual: "Currency is duplicated - appears under My Profile > Regional Settings and also as a separate standalone item", severity: "Medium", status: "Closed", team: "Frontend", source: "PM & Team" }
+    { ticket: "BUG-001", module: "Authentication", feature: "OAuth 2.0 Flow", description: "JWT session token expires prematurely without refresh header", steps: "1. Log into portal\n2. Wait 15 minutes\n3. Click any API action", expected: "Token should auto-refresh seamlessly", actual: "Redirects to login page with 401 Unauthenticated error", severity: "High", status: "Open", team: "Backend" },
+    { ticket: "BUG-002", module: "Dashboard", feature: "Analytics Charts", description: "Bar chart component fails to render on mobile viewports (<600px)", steps: "1. Open dashboard on mobile device\n2. Inspect charts section", expected: "Chart should resize dynamically with responsive layout", actual: "Chart overflows right border causing horizontal scrollbar", severity: "Medium", status: "Open", team: "Frontend" },
+    { ticket: "BUG-003", module: "Payments & Billing", feature: "Stripe Webhook", description: "Webhook listener throws 500 internal server error on missing customer metadata", steps: "1. Send raw webhook event from Stripe CLI\n2. Exclude metadata object", expected: "Fallback gracefully with default customer record", actual: "Uncaught KeyError in Python handler", severity: "Critical", status: "Fixed", team: "Backend" }
 ];
 // ===END_BUG_DATA===
-
-
 
 // ===================== STATE =====================
 let bugs = [];
 let expandedRows = new Set();
 const MAX_UNDO_HISTORY = 50;
 
-// Auto-compute a fingerprint of DEFAULT_BUGS so we detect file changes automatically
-// No more manual version bumping needed!
 function computeDataFingerprint() {
     var raw = JSON.stringify(DEFAULT_BUGS);
     var hash = 0;
     for (var i = 0; i < raw.length; i++) {
         var ch = raw.charCodeAt(i);
         hash = ((hash << 5) - hash) + ch;
-        hash = hash & hash; // Convert to 32-bit integer
+        hash = hash & hash;
     }
     return 'fp_' + Math.abs(hash) + '_' + DEFAULT_BUGS.length;
 }
 
 function loadBugs() {
     var currentFingerprint = computeDataFingerprint();
-    var storedFingerprint = localStorage.getItem('primbooks_data_fingerprint');
+    var storedFingerprint = localStorage.getItem('generic_tracker_fingerprint');
 
-    // If the file's DEFAULT_BUGS changed (new bugs added, statuses updated, etc.)
-    // always load fresh from the file -- this is the bulletproof part
     if (storedFingerprint !== currentFingerprint) {
         bugs = JSON.parse(JSON.stringify(DEFAULT_BUGS));
-        localStorage.setItem('primbooks_data_fingerprint', currentFingerprint);
-        localStorage.removeItem('primbooks_undo_history');
+        localStorage.setItem('generic_tracker_fingerprint', currentFingerprint);
+        localStorage.removeItem('generic_tracker_undo');
         saveBugsNoHistory();
-        if (storedFingerprint) {
-            // Not the very first load -- show sync notification
-            showToast('Bug data updated from latest push!');
-        }
         return;
     }
 
-    // File hasn't changed -- load from localStorage if available (preserves in-session edits)
-    var stored = localStorage.getItem('primbooks_bugs');
+    var stored = localStorage.getItem('generic_tracker_bugs');
     if (stored) {
         try {
             bugs = JSON.parse(stored);
-            // Safety check -- if localStorage somehow has 0 bugs, reload from defaults
             if (!bugs || bugs.length === 0) {
                 bugs = JSON.parse(JSON.stringify(DEFAULT_BUGS));
                 saveBugsNoHistory();
             }
         } catch(e) {
-            // If localStorage is corrupted, reload from defaults
             bugs = JSON.parse(JSON.stringify(DEFAULT_BUGS));
             saveBugsNoHistory();
         }
@@ -1145,38 +1123,28 @@ function loadBugs() {
     updateUndoButton();
 }
 
-function showSyncNotification(count, tickets) {
-    var ticketList = tickets.join(', ');
-    showToast(count + ' new bug' + (count > 1 ? 's' : '') + ' synced: ' + ticketList);
-}
-
-// ===================== UNDO HISTORY =====================
 function pushToHistory() {
-    const history = JSON.parse(localStorage.getItem('primbooks_undo_history') || '[]');
-    // Save current state before the change
-    const currentState = localStorage.getItem('primbooks_bugs');
+    const history = JSON.parse(localStorage.getItem('generic_tracker_undo') || '[]');
+    const currentState = localStorage.getItem('generic_tracker_bugs');
     if (currentState) {
         history.push(currentState);
-        // Keep only last N snapshots to avoid bloating storage
         if (history.length > MAX_UNDO_HISTORY) {
             history.shift();
         }
-        localStorage.setItem('primbooks_undo_history', JSON.stringify(history));
+        localStorage.setItem('generic_tracker_undo', JSON.stringify(history));
     }
     updateUndoButton();
 }
 
 function undoLastChange() {
-    const history = JSON.parse(localStorage.getItem('primbooks_undo_history') || '[]');
+    const history = JSON.parse(localStorage.getItem('generic_tracker_undo') || '[]');
     if (history.length === 0) {
         showToast('Nothing to undo');
         return;
     }
-    // Pop the last state
     const previousState = history.pop();
-    localStorage.setItem('primbooks_undo_history', JSON.stringify(history));
-    // Restore it
-    localStorage.setItem('primbooks_bugs', previousState);
+    localStorage.setItem('generic_tracker_undo', JSON.stringify(history));
+    localStorage.setItem('generic_tracker_bugs', previousState);
     bugs = JSON.parse(previousState);
     renderTable();
     updateUndoButton();
@@ -1184,40 +1152,22 @@ function undoLastChange() {
 }
 
 function updateUndoButton() {
-    const history = JSON.parse(localStorage.getItem('primbooks_undo_history') || '[]');
+    const history = JSON.parse(localStorage.getItem('generic_tracker_undo') || '[]');
     const btn = document.getElementById('undoBtn');
     if (btn) {
         btn.disabled = history.length === 0;
-        btn.title = history.length > 0
-            ? 'Undo last change (' + history.length + ' steps available)'
-            : 'No changes to undo';
-    }
-}
-
-function resetToDefaults() {
-    if (confirm('FACTORY RESET: This will wipe ALL bugs and restore original defaults. This CANNOT be undone. Are you absolutely sure?')) {
-        if (confirm('SECOND CONFIRM: All your added bugs, status changes, and edits will be permanently deleted. Proceed?')) {
-            localStorage.removeItem('primbooks_bugs');
-            localStorage.removeItem('primbooks_data_fingerprint');
-            localStorage.removeItem('primbooks_data_version');
-            localStorage.removeItem('primbooks_undo_history');
-            bugs = JSON.parse(JSON.stringify(DEFAULT_BUGS));
-            localStorage.setItem('primbooks_data_fingerprint', computeDataFingerprint());
-            saveBugsNoHistory();
-            renderTable();
-            showToast('Factory reset complete -- all data cleared');
-        }
+        btn.title = history.length > 0 ? 'Undo last change (' + history.length + ' steps available)' : 'No changes to undo';
     }
 }
 
 function saveBugsNoHistory() {
-    localStorage.setItem('primbooks_bugs', JSON.stringify(bugs));
+    localStorage.setItem('generic_tracker_bugs', JSON.stringify(bugs));
     updateTimestamp();
 }
 
 function saveBugs() {
-    pushToHistory(); // save current state BEFORE overwriting
-    localStorage.setItem('primbooks_bugs', JSON.stringify(bugs));
+    pushToHistory();
+    localStorage.setItem('generic_tracker_bugs', JSON.stringify(bugs));
     updateTimestamp();
     updateUndoButton();
 }
@@ -1262,25 +1212,6 @@ function updateModuleFilter() {
     select.value = current;
 }
 
-
-// ===================== SOURCE TABS =====================
-let currentSourceTab = 'all';
-
-function switchSourceTab(source) {
-    currentSourceTab = source;
-    document.querySelectorAll('.source-tab').forEach(function(tab) {
-        tab.style.borderBottomColor = 'transparent';
-        tab.style.color = 'var(--text-dim)';
-        tab.style.fontWeight = '500';
-    });
-    var activeId = source === 'all' ? 'tabAll' : (source === 'Senior QA Audit' ? 'tabQA' : 'tabPM');
-    var activeTab = document.getElementById(activeId);
-    activeTab.style.borderBottomColor = 'var(--accent)';
-    activeTab.style.color = 'var(--accent)';
-    activeTab.style.fontWeight = '600';
-    renderTable();
-}
-
 function getFilteredBugs() {
     const status = document.getElementById('filterStatus').value;
     const severity = document.getElementById('filterSeverity').value;
@@ -1293,13 +1224,6 @@ function getFilteredBugs() {
         if (severity !== 'all' && b.severity !== severity) return false;
         if (module !== 'all' && b.module !== module) return false;
         if (team !== 'all' && b.team !== team) return false;
-        let bugSource = b.source;
-        if (!bugSource) {
-            const m = b.ticket.match(/PB-(\d+)/);
-            const num = m ? parseInt(m[1]) : 0;
-            bugSource = num >= 63 ? 'PM & Team' : 'Senior QA Audit';
-        }
-        if (currentSourceTab !== 'all' && bugSource !== currentSourceTab) return false;
         if (search && !b.description.toLowerCase().includes(search) && !b.ticket.toLowerCase().includes(search) && !b.module.toLowerCase().includes(search)) return false;
         return true;
     });
@@ -1323,7 +1247,7 @@ function renderTable() {
         const isExpanded = expandedRows.has(realIdx);
 
         html += '<tr>' +
-            '<td><button class="expand-btn" onclick="toggleDetail(' + realIdx + ')">' + (isExpanded ? '&#x25BC;' : '&#x25B6;') + '</button></td>' +
+            '<td><button class="expand-btn" onclick="toggleDetail(' + realIdx + ')">' + (isExpanded ? '▼' : '▶') + '</button></td>' +
             '<td><span class="ticket-num">' + esc(bug.ticket) + '</span></td>' +
             '<td style="max-width:320px">' + esc(bug.description) + '</td>' +
             '<td><span class="module-text">' + esc(bug.module) + '</span></td>' +
@@ -1373,12 +1297,6 @@ function severityDot(s) {
     return '<span class="color-dot ' + c + '"></span>';
 }
 
-function statusDot(s) {
-    var colors = { Open: 'red', Fixed: 'yellow', Closed: 'green', Void: 'gray' };
-    var c = colors[s] || 'gray';
-    return '<span class="color-dot ' + c + '"></span>';
-}
-
 function esc(str) {
     if (!str) return '';
     const div = document.createElement('div');
@@ -1386,7 +1304,6 @@ function esc(str) {
     return div.innerHTML;
 }
 
-// ===================== ACTIONS =====================
 function changeStatus(idx, newStatus) {
     bugs[idx].status = newStatus;
     saveBugs();
@@ -1428,24 +1345,19 @@ function editBug(idx) {
     document.getElementById('formSteps').value = bug.steps || '';
     document.getElementById('formExpected').value = bug.expected || '';
     document.getElementById('formActual').value = bug.actual || '';
-    if (document.getElementById('formSource')) {
-        const ticketNum = parseInt(bug.ticket.replace('PB-', '')) || 0;
-        document.getElementById('formSource').value = bug.source || (ticketNum >= 63 ? 'PM & Team' : 'Senior QA Audit');
-    }
     document.getElementById('addModal').classList.add('show');
 }
 
 function openAddModal() {
     document.getElementById('modalTitle').textContent = '+ Add New Bug';
     document.getElementById('editIndex').value = -1;
-    // Auto-generate next ticket number
     const nums = bugs.map(b => {
-        const m = b.ticket.match(/PB-(\d+)/);
+        const m = b.ticket.match(/BUG-(\d+)/);
         return m ? parseInt(m[1]) : 0;
     });
     const next = Math.max(...nums, 0) + 1;
-    document.getElementById('formTicket').value = 'PB-' + String(next).padStart(3, '0');
-    document.getElementById('formModule').value = 'Dashboard';
+    document.getElementById('formTicket').value = 'BUG-' + String(next).padStart(3, '0');
+    document.getElementById('formModule').value = 'Authentication';
     document.getElementById('formFeature').value = '';
     document.getElementById('formSeverity').value = 'High';
     document.getElementById('formTeam').value = 'Backend';
@@ -1454,9 +1366,6 @@ function openAddModal() {
     document.getElementById('formSteps').value = '';
     document.getElementById('formExpected').value = '';
     document.getElementById('formActual').value = '';
-    if (document.getElementById('formSource')) {
-        document.getElementById('formSource').value = currentSourceTab === 'all' ? 'Senior QA Audit' : currentSourceTab;
-    }
     document.getElementById('addModal').classList.add('show');
 }
 
@@ -1482,8 +1391,7 @@ function saveBug() {
         actual: document.getElementById('formActual').value.trim(),
         severity: document.getElementById('formSeverity').value,
         status: document.getElementById('formStatus').value,
-        team: document.getElementById('formTeam').value,
-        source: document.getElementById('formSource') ? document.getElementById('formSource').value : 'Senior QA Audit'
+        team: document.getElementById('formTeam').value
     };
 
     const editIdx = parseInt(document.getElementById('editIndex').value);
@@ -1500,14 +1408,10 @@ function saveBug() {
     closeModal();
 }
 
-// ===================== EXPORT =====================
 function exportMarkdown() {
-    var md = '# PrimBooks -- Bug Tickets Registry\n\n';
-    md += '**Last Updated:** ' + new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + '\n';
-    md += '**QA Lead:** Azeez Test Lab\n\n';
-    md += '---\n\n';
-
-    md += '## Summary\n\n';
+    var md = '# Enterprise Bug Tracker -- Summary Report\n\n';
+    md += '**Generated:** ' + new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + '\n\n';
+    md += '---\n\n## Summary\n\n';
     md += '| Metric | Count |\n|:---|:---:|\n';
     md += '| Total | ' + bugs.length + ' |\n';
     md += '| Open | ' + bugs.filter(function(b){return b.status==='Open'}).length + ' |\n';
@@ -1522,89 +1426,8 @@ function exportMarkdown() {
         md += '| ' + b.ticket + ' | ' + b.module + ' | ' + b.description + ' | ' + b.severity + ' | ' + b.status + ' | ' + b.team + ' |\n';
     });
 
-    md += '\n---\n\n## Detailed Bug Information\n\n';
-    bugs.forEach(function(b) {
-        md += '### ' + b.ticket + ' -- ' + b.description + '\n\n';
-        md += '- **Module:** ' + b.module + '\n';
-        md += '- **Feature:** ' + (b.feature || 'N/A') + '\n';
-        md += '- **Severity:** ' + b.severity + '\n';
-        md += '- **Status:** ' + b.status + '\n';
-        md += '- **Team:** ' + b.team + '\n\n';
-        if (b.steps) md += '**Steps to Reproduce:**\n' + b.steps + '\n\n';
-        if (b.expected) md += '**Expected:** ' + b.expected + '\n\n';
-        if (b.actual) md += '**Actual:** ' + b.actual + '\n\n';
-        md += '---\n\n';
-    });
-
     downloadFile('BUG_TICKETS_EXPORT.md', md);
     showToast('Markdown exported');
-}
-
-function exportMeetingAudit() {
-    const total = bugs.length;
-    const open = bugs.filter(b => b.status === 'Open').length;
-    const fixed = bugs.filter(b => b.status === 'Fixed').length;
-    const closed = bugs.filter(b => b.status === 'Closed').length;
-    const voidC = bugs.filter(b => b.status === 'Void').length;
-    const resolved = fixed + closed;
-    const rate = total > 0 ? Math.round((resolved / total) * 100) : 0;
-
-    var md = '# PrimBooks -- Meeting Audit Summary\n\n';
-    md += '**Date:** ' + new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + '\n';
-    md += '**QA Lead:** Azeez Test Lab\n\n';
-    md += '---\n\n';
-
-    md += '## Quick Overview\n\n';
-    md += '| Metric | Value |\n|:---|:---:|\n';
-    md += '| Total Tickets | ' + total + ' |\n';
-    md += '| Open | ' + open + ' |\n';
-    md += '| Fixed | ' + fixed + ' |\n';
-    md += '| Closed | ' + closed + ' |\n';
-    md += '| Void | ' + voidC + ' |\n';
-    md += '| Resolution Rate | ' + rate + '% |\n\n';
-
-    md += '---\n\n## By Severity\n\n';
-    md += '| Severity | Total | Open | Fixed | Closed |\n|:---|:---:|:---:|:---:|:---:|\n';
-    ['Critical', 'High', 'Medium', 'Low'].forEach(function(sev) {
-        var s = bugs.filter(function(b) { return b.severity === sev; });
-        if (s.length > 0) {
-            md += '| ' + sev + ' | ' + s.length + ' | ' + s.filter(function(b){return b.status==='Open'}).length + ' | ' + s.filter(function(b){return b.status==='Fixed'}).length + ' | ' + s.filter(function(b){return b.status==='Closed'}).length + ' |\n';
-        }
-    });
-
-    md += '\n---\n\n## By Team\n\n';
-    md += '| Team | Total | Open | Fixed | Closed |\n|:---|:---:|:---:|:---:|:---:|\n';
-    ['Backend', 'Frontend'].forEach(function(team) {
-        var t = bugs.filter(function(b) { return b.team === team; });
-        md += '| ' + team + ' | ' + t.length + ' | ' + t.filter(function(b){return b.status==='Open'}).length + ' | ' + t.filter(function(b){return b.status==='Fixed'}).length + ' | ' + t.filter(function(b){return b.status==='Closed'}).length + ' |\n';
-    });
-
-    md += '\n---\n\n## Open Tickets (Action Required)\n\n';
-    md += '| # | Ticket | Module | Issue | Severity | Team |\n|:---:|:---|:---|:---|:---:|:---:|\n';
-    bugs.filter(function(b) { return b.status === 'Open'; }).forEach(function(b, i) {
-        md += '| ' + (i+1) + ' | ' + b.ticket + ' | ' + b.module + ' | ' + b.description + ' | ' + b.severity + ' | ' + b.team + ' |\n';
-    });
-
-    if (fixed > 0) {
-        md += '\n---\n\n## Fixed (Awaiting Verification)\n\n';
-        md += '| Ticket | Module | Issue | Team |\n|:---|:---|:---|:---:|\n';
-        bugs.filter(function(b) { return b.status === 'Fixed'; }).forEach(function(b) {
-            md += '| ' + b.ticket + ' | ' + b.module + ' | ' + b.description + ' | ' + b.team + ' |\n';
-        });
-    }
-
-    if (closed > 0) {
-        md += '\n---\n\n## Closed (Verified Fixed)\n\n';
-        md += '| Ticket | Module | Issue |\n|:---|:---|:---|\n';
-        bugs.filter(function(b) { return b.status === 'Closed'; }).forEach(function(b) {
-            md += '| ' + b.ticket + ' | ' + b.module + ' | ' + b.description + ' |\n';
-        });
-    }
-
-    md += '\n---\n\n*Meeting Audit by Azeez Test Lab*\n';
-
-    downloadFile('MEETING_AUDIT_EXPORT.md', md);
-    showToast('Meeting audit exported');
 }
 
 function downloadFile(filename, content) {
@@ -1617,7 +1440,6 @@ function downloadFile(filename, content) {
     URL.revokeObjectURL(url);
 }
 
-// ===================== COPY FOR PUSH =====================
 function copyForPush() {
     var code = "// ===BEGIN_BUG" + "_DATA===\n";
     code += "const DEFAULT_BUGS = [\n";
@@ -1632,9 +1454,7 @@ function copyForPush() {
         code += "actual: " + JSON.stringify(bug.actual || "") + ", ";
         code += "severity: " + JSON.stringify(bug.severity) + ", ";
         code += "status: " + JSON.stringify(bug.status) + ", ";
-        code += "team: " + JSON.stringify(bug.team) + ", ";
-        var src = bug.source || (parseInt(bug.ticket.replace("PB-", "")) >= 63 ? "PM & Team" : "Senior QA Audit");
-        code += "source: " + JSON.stringify(src);
+        code += "team: " + JSON.stringify(bug.team);
         code += " }";
         if (i < bugs.length - 1) code += ",";
         code += "\n";
@@ -1642,7 +1462,7 @@ function copyForPush() {
     code += "];\n";
     code += "// ===END_BUG" + "_DATA===";
     navigator.clipboard.writeText(code).then(function() {
-        showToast("Copied " + bugs.length + " bugs! Run PUSH.bat now");
+        showToast("Copied " + bugs.length + " bugs to clipboard!");
     }).catch(function() {
         var ta = document.createElement("textarea");
         ta.value = code;
@@ -1650,11 +1470,10 @@ function copyForPush() {
         ta.select();
         document.execCommand("copy");
         document.body.removeChild(ta);
-        showToast("Copied " + bugs.length + " bugs! Run PUSH.bat now");
+        showToast("Copied " + bugs.length + " bugs to clipboard!");
     });
 }
 
-// ===================== TOAST =====================
 function showToast(message) {
     const toast = document.getElementById('toast');
     document.getElementById('toastMessage').textContent = message;
@@ -1662,22 +1481,17 @@ function showToast(message) {
     setTimeout(function() { toast.classList.remove('show'); }, 2500);
 }
 
-// ===================== KEYBOARD SHORTCUTS =====================
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
     if (e.key === 'n' && e.ctrlKey) { e.preventDefault(); openAddModal(); }
 });
 
-// Click outside modal to close
 document.getElementById('addModal').addEventListener('click', function(e) {
     if (e.target === document.getElementById('addModal')) closeModal();
 });
 
-// ===================== INIT =====================
 loadBugs();
 renderTable();
 </script>
-
 </body>
 </html>
-

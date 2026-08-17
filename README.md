@@ -1,102 +1,98 @@
-# 🐞 Interactive Enterprise Bug Tracker Dashboard & Sync Pipeline
+# 🐞 Enterprise Interactive Bug Tracker & Defect Management Dashboard
 
-A high-performance, single-file interactive QA Bug Tracking Dashboard and automated synchronization pipeline engineered by **Azeez Test Lab**. 
+An ultra-fast, zero-dependency, single-file interactive QA Bug Tracker & Defect Triage System built with Vanilla JavaScript and CSS. Designed to serve as a lightweight, deployable, open-source alternative to Jira/Linear for software engineering teams, QA leads, and personal developer portfolios.
 
-Designed for QA Leads, Developers, and Product Managers to seamlessly log, triage, filter, and track defects across complex ERP applications (e.g. PrimBooks ERP) with zero external database dependencies.
-
-![Bug Tracker Status](https://img.shields.io/badge/Status-Live--Production-success?style=for-the-badge&logo=github)
-![QA Standard](https://img.shields.io/badge/QA%20Standard-Senior%20QA%20Lead-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Live--Production-success?style=for-the-badge&logo=github)
+![Tech Stack](https://img.shields.io/badge/Tech-HTML5%20%7C%20CSS3%20%7C%20Vanilla%20JS-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)
 
 ---
 
 ## 🌟 Key Features
 
-* **⚡ Zero-Dependency Dashboard (`index.html`):** Fully interactive single-page application built with Vanilla JS and CSS grid/flexbox. Instant client-side filtering without page reloads.
-* **🎯 Multi-Dimensional Triage Filters:**
-  * **Severity:** Blocker, Critical, High, Medium, Low, Trivial.
-  * **Status:** Open, Under Investigation, Dev Patch Pending, Resolved, Retested & Closed.
-  * **Module Breakdown:** Auth, CRM, Records, Production, Purchase, Inventory, Assets, Finance, Payroll, Settings.
-* **🔍 Instant Global Search:** Real-time fuzzy search across Bug IDs, titles, descriptions, steps to reproduce, and expected/actual outputs.
-* **📊 Analytics & KPI Counters:** Live calculation of total bugs, resolved ratio, critical open count, and module defect density.
-* **🖼️ Interactive Evidence Viewer:** Clickable modal popups for viewing screenshot evidence and video proof attached to bug reports.
-* **🔄 PowerShell Automated Data Pipeline (`update_bugs.ps1` & `PUSH.bat`):** Seamless CLI batch updater that injects newly captured bug records from `new_bugs.txt` into the tracker and pushes directly to GitHub.
-* **🌐 GitHub Pages Ready:** Automatic zero-config hosting via `index.html`.
+* **⚡ Zero External Dependencies:** Single HTML page application. No frameworks, build steps, or server setups required.
+* **🎯 Multi-Dimensional Filtering:**
+  * **Severity Triage:** Critical, High, Medium, Low.
+  * **Status Lifecycle:** Open, Fixed, Closed, Void.
+  * **Module Categorization:** Authentication, Dashboard, API Gateway, User Management, Database, Payments & Billing, etc.
+  * **Team Ownership:** Backend, Frontend, Fullstack.
+* **🔍 Global Instant Search:** Real-time search across ticket IDs, descriptions, and module labels.
+* **📊 Analytics & Resolution Progress:** Dynamic calculation of open vs. fixed defect metrics and team resolution percentages.
+* **↩️ In-Memory Undo Stack:** Built-in history state allowing instant multi-step undo of accidental edits or status changes.
+* **📋 One-Click Markdown Export:** Export full defect reports into clean GitHub-flavored Markdown tables for meeting syncs and stakeholder updates.
+* **🚀 GitHub API Direct Auto-Push:** Push defect data changes directly to your GitHub repository using a personal access token (PAT).
+* **🌐 GitHub Pages Hostable:** Deploy instantly on GitHub Pages for live interactive access.
 
 ---
 
 ## 🚀 Quick Start & Installation
 
-### Option 1: View Online (GitHub Pages)
-Access the live interactive tracker directly in your browser:
+### Option 1: Live Demo (GitHub Pages)
+View the live interactive tracker dashboard directly in your web browser:
 👉 **[https://gundro1.github.io/Bug_tracker/](https://gundro1.github.io/Bug_tracker/)**
 
 ---
 
-### Option 2: Local Usage & Setup
+### Option 2: Local Setup
 
-1. **Clone the Repository:**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/Gundro1/Bug_tracker.git
    cd Bug_tracker
    ```
 
 2. **Open the Dashboard:**
-   Double-click `index.html` or open it with any web browser (Chrome, Firefox, Edge, Safari):
+   Open `index.html` in any modern web browser (Chrome, Edge, Firefox, Safari):
    ```bash
-   # On Windows PowerShell
-   Start-Process index.html
+   # On Windows
+   start index.html
+
+   # On macOS
+   open index.html
    ```
 
 ---
 
-## 🛠️ Automated Bug Update & GitHub Push Workflow
+## 🛠️ How to Customize for Your Project
 
-Updating defects and pushing them to your developers takes 5 seconds:
-
-### Method A: Automated PowerShell Script (`update_bugs.ps1`)
-
-1. Open `new_bugs.txt` and append your newly formatted bug data inside the JS data array.
-2. Run `update_bugs.ps1` in PowerShell:
-   ```powershell
-   .\update_bugs.ps1
-   ```
-3. Commit and push to GitHub:
-   ```bash
-   git add index.html bug_tracker.html new_bugs.txt
-   git commit -m "Update bug tracker records - 91+ verified tickets"
-   git push origin main
-   ```
-
-### Method B: One-Click Windows Batch Pusher (`PUSH.bat`)
-
-1. Copy your new bug JSON block to your Windows Clipboard (`Ctrl + C`).
-2. Double-click **`PUSH.bat`**.
-3. The script validates clipboard data, updates `index.html` & `bug_tracker.html`, prompts for an optional commit message, and automatically executes `git push origin main`!
-
----
-
-## 📁 Repository File Architecture
-
+### 1. Change Default Bug List
+Open `index.html` and edit the `DEFAULT_BUGS` array around line 270:
+```javascript
+const DEFAULT_BUGS = [
+    { 
+        ticket: "BUG-001", 
+        module: "Authentication", 
+        feature: "OAuth Flow", 
+        description: "Token expires prematurely", 
+        steps: "1. Log in\n2. Wait 15 mins", 
+        expected: "Auto-refresh token", 
+        actual: "401 Unauthorized", 
+        severity: "High", 
+        status: "Open", 
+        team: "Backend" 
+    }
+];
 ```
-Bug_tracker/
-├── index.html                     # Live GitHub Pages & main dashboard entry point
-├── bug_tracker.html               # Backup interactive dashboard file
-├── update_bugs.ps1                # PowerShell script for injecting new bug data
-├── PUSH.bat                       # One-click Windows clipboard-to-git push batch file
-├── new_bugs.txt                   # Raw bug database store & staging records
-├── PRIMBOOKS_QA_LEAD_FINAL_REPORT # Executive summary reports & PDF exports
-└── README.md                      # Documentation & instructions
+
+### 2. Configure GitHub Repository Target
+In `index.html`, set your GitHub repository details in `PROJECT_CONFIG`:
+```javascript
+const PROJECT_CONFIG = {
+    name: "Enterprise Bug Tracker",
+    subtitle: "Universal Defect Management",
+    logo: "BT",
+    repo: "YOUR_GITHUB_USERNAME/YOUR_REPO_NAME",
+    file: "index.html",
+    branch: "main"
+};
 ```
 
 ---
 
-## 👤 Author & QA Lead
+## 📄 License
 
-**Ogundero Azeez A.**  
-*Senior QA Lead Engineer & Test Automation Specialist*  
-*Azeez Test Lab*
+Distributed under the **MIT License**. Free for personal, academic, and commercial software projects.
 
 ---
 
-*Licensed under the MIT License.*
+**Developed & Maintained by:** [Gundro1](https://github.com/Gundro1)
